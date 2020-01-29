@@ -179,27 +179,17 @@ void main()
         reg_uart_clkdiv = 10417;
     #endif
 
-	// Need boot-up time for the display;  give it 2 seconds
-	for (j = 0; j < 350000 * m; j++);
-
 	// This should appear on the LCD display 4x20 characters.
-//        print("PicoRV32 RISC       ");
 	reg_gpio_data = 0x2222;
 	for (j = 0; j < 50000 * m; j++);
-//        print("Clifford Wolf       ");
 	reg_gpio_data = 0x4444;
 	for (j = 0; j < 50000 * m; j++);
-//        print("Raven PicoSoc       ");
 	reg_gpio_data = 0x8888;
 	for (j = 0; j < 50000 * m; j++);
-//        print("Tim Edwards/efabless");
 
 	// Follow this with an LED pattern
 	reg_gpio_ena = 0x0000;		// 1 = input, 0 = output
 
-	// Delay 1 second, print registers, delay another second
-	for (j = 0; j < 170000 * m; j++);
-//	cmd_read_flash_regs();
 	for (j = 0; j < 170000 * m; j++);
 
 	while (1) {
@@ -221,26 +211,6 @@ void main()
 		r >>= 1;
 		if (r == 0) break;
 	    }
-
-	    // Update LEDs.  Run longer in quad and ddr modes.
-	    r = m >> 1;
-	    while (1) {
-	    	reg_gpio_data = 0x0101;
-	    	for (i = 0; i < 16; i++) {
-		    reg_gpio_data <<= 1;
-		    if (reg_gpio_data == 0x0100) reg_gpio_data = 0x0101;
-		    for (j = 0; j < 17000; j++);
-	        }
-	        reg_gpio_data = 0x8080;
-	        for (i = 0; i < 16; i++) {
-		    reg_gpio_data >>= 1;
-		    if (reg_gpio_data == 0x0080) reg_gpio_data = 0x8080;
-		    for (j = 0; j < 17000; j++);
-	        }
-		r >>= 1;
-		if (r == 0) break;
-	    }
-
 	}
 }
 
