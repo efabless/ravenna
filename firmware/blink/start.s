@@ -35,11 +35,55 @@ addi x29, zero, 0
 addi x30, zero, 0
 addi x31, zero, 0
 
-# zero initialize scratchpad memory
+# Update LEDs
+# li a0, 0x03000000
+# li a1, 1
+# sw a1, 0(a0)
+
+# zero initialize entire scratchpad memory
+# li a0, 0x00000000
 # setmemloop:
-# sw zero, 0(x1)
-# addi x1, x1, 4
-# blt x1, sp, setmemloop
+# sw zero, 0(a0)
+# addi a0, a0, 4
+# blt a0, sp, setmemloop
+
+# Update LEDs
+# li a0, 0x03000000
+# li a1, 3
+# sw a1, 0(a0)
+
+# copy data section
+la a0, _sidata
+la a1, _sdata
+la a2, _edata
+bge a1, a2, end_init_data
+loop_init_data:
+lw a3, 0(a0)
+sw a3, 0(a1)
+addi a0, a0, 4
+addi a1, a1, 4
+blt a1, a2, loop_init_data
+end_init_data:
+
+# Update LEDs
+# li a0, 0x03000000
+# li a1, 7
+# sw a1, 0(a0)
+
+# zero-init bss section
+# la a0, _sbss
+# la a1, _ebss
+# bge a0, a1, end_init_bss
+# loop_init_bss:
+# sw zero, 0(a0)
+# addi a0, a0, 4
+# blt a0, a1, loop_init_bss
+# end_init_bss:
+
+# Update LEDs
+# li a0, 0x03000000
+# li a1, 15
+# sw a1, 0(a0)
 
 # call main
 call main
@@ -83,22 +127,11 @@ sb   t1, 0(t0)
 
 # SPI transfer
 flashio_worker_L1:
-
-# If byte count is zero, we're done
 beqz a1, flashio_worker_L3
-
-# Set t5 to count down 32 bits
-li   t5, 32
-# Load t2 from address a0 (4 bytes)
-lw   t2, 0(a0)
-
-flashio_worker_LY:
-# Set t6 to count down 8 bits
-li   t6, 8
-
+li   t5, 8
+lbu  t2, 0(a0)
 flashio_worker_L2:
-# Clock out the bit (msb first) on IO0 and read bit in from IO1
-srli t4, t2, 31
+srli t4, t2, 7
 sb   t4, 0(t0)
 ori  t4, t4, 0x10
 sb   t4, 0(t0)
@@ -107,30 +140,20 @@ andi t4, t4, 2
 srli t4, t4, 1
 slli t2, t2, 1
 or   t2, t2, t4
-
-# Decrement 32 bit count
+andi t2, t2, 0xff
 addi t5, t5, -1
-bnez t5, flashio_worker_LX
-
-sw   t2, 0(a0)
-addi a0, a0, 4
-lw   t2, 0(a0)
-
-flashio_worker_LX:
-addi t6, t6, -1
-bnez t6, flashio_worker_L2
+bnez t5, flashio_worker_L2
+sb   t2, 0(a0)
+addi a0, a0, 1
 addi a1, a1, -1
-bnez a1, flashio_worker_LY
-
-beqz t5, flashio_worker_L3
-sw   t2, 0(a0)
-
+j    flashio_worker_L1
 flashio_worker_L3:
+
 # Back to MEMIO mode
 li   t1, 0x80
 sb   t1, 3(t0)
 
 ret
+
 .balign 4
 flashio_worker_end:
-
