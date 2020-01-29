@@ -152,65 +152,63 @@ void cmd_read_flash_regs()
 void main()
 {
 	uint32_t i, j, m, r, mode;
-	uint32_t adcval;
-	uint32_t dacval;
 
 	/* Note that it definitely does not work in simulation because	*/
 	/* the behavioral verilog for the SPI flash does not support	*/
 	/* the configuration register read/write functions.		*/
 
-	set_flash_latency(8);
+    //	set_flash_latency(8);
 
 	// Start in standard (1x speed) mode
 
 	// Set m for speed multiplier:
 	// 1 standard (1x), 2 for DSPI (2x)
-	mode = 1;
-	m = 1;
+//	mode = 1;
+//	m = 1;
 
 	// Enable GPIO (all output, ena = 0)
 	reg_gpio_ena = 0x0000;
 	reg_gpio_data = 0x1111;
 
 	// Set UART clock to 9600 baud
-    #ifdef RAVEN2_BOARD
-        reg_uart_clkdiv = 8333;
-    #else
-        reg_uart_clkdiv = 10417;
-    #endif
+//    #ifdef RAVEN2_BOARD
+//        reg_uart_clkdiv = 8333;
+//    #else
+//        reg_uart_clkdiv = 10417;
+//    #endif
 
 	// This should appear on the LCD display 4x20 characters.
-	reg_gpio_data = 0x2222;
-	for (j = 0; j < 50000 * m; j++);
-	reg_gpio_data = 0x4444;
-	for (j = 0; j < 50000 * m; j++);
-	reg_gpio_data = 0x8888;
-	for (j = 0; j < 50000 * m; j++);
+//	reg_gpio_data = 0x2222;
+//	for (j = 0; j < 50000 * m; j++);
+//	reg_gpio_data = 0x4444;
+//	for (j = 0; j < 50000 * m; j++);
+//	reg_gpio_data = 0x8888;
+//	for (j = 0; j < 50000 * m; j++);
 
 	// Follow this with an LED pattern
-	reg_gpio_ena = 0x0000;		// 1 = input, 0 = output
+//	reg_gpio_ena = 0x0000;		// 1 = input, 0 = output
 
-	for (j = 0; j < 170000 * m; j++);
+//	for (j = 0; j < 170000 * m; j++);
 
 	while (1) {
 
 	    // Update LEDs
-	    r = m >> 1;
-	    while (1) {
-	        reg_gpio_data = 0x0001;
-	        for (i = 0; i < 16; i++) {
-		    reg_gpio_data <<= 1;
-		    for (j = 0; j < 17000; j++);
-	        }
+//	    r = m >> 1;
+//	    while (1) {
+//	        reg_gpio_data = 0x0001;
+//	        for (i = 0; i < 16; i++) {
+//		    reg_gpio_data <<= 1;
+//		    for (j = 0; j < 17000; j++);
+//	        }
 	
-	        reg_gpio_data = 0x8000;
-	        for (i = 0; i < 16; i++) {
-		    reg_gpio_data >>= 1;
-		    for (j = 0; j < 17000; j++);
-		}
-		r >>= 1;
-		if (r == 0) break;
-	    }
+//	        reg_gpio_data = 0x8000;
+//	        for (i = 0; i < 16; i++) {
+//		    reg_gpio_data >>= 1;
+//		    for (j = 0; j < 17000; j++);
+//		}
+//		r >>= 1;
+//		if (r == 0) break;
+//	    }
 	}
 }
 
