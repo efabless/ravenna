@@ -168,7 +168,7 @@ void main()
 
 	// Enable GPIO (all output, ena = 0)
 	reg_gpio_ena = 0x0000;
-	reg_gpio_data = 0x1111;
+	reg_gpio_data = 0xffff;
 
 	// Set UART clock to 9600 baud
 //    #ifdef RAVEN2_BOARD
@@ -192,7 +192,7 @@ void main()
 
 	while (1) {
 
-		reg_gpio_data = 0x1111;
+		reg_gpio_data = 0xffff;
 
 	    // Update LEDs
 //	    r = m >> 1;
