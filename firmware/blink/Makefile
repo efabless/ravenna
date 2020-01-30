@@ -23,6 +23,9 @@ hex:  ${PATTERN:=.hex}
 client: client.c
 	gcc client.c -o client
 
+flash: blink.hex
+	python3 ../../test/ravenna_flash.py blink.hex
+
 # ---- Clean ----
 
 clean:
