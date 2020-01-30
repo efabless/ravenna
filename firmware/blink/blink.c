@@ -192,6 +192,8 @@ void main()
 
 	while (1) {
 
+		reg_gpio_data = 0x1111;
+
 	    // Update LEDs
 //	    r = m >> 1;
 //	    while (1) {
