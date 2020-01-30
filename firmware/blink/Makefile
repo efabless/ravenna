@@ -31,5 +31,5 @@ flash: blink.hex
 clean:
 	rm -f *.elf *.hex *.bin *.vvp *.vcd
 
-.PHONY: clean hex all
+.PHONY: clean hex all flash
 
