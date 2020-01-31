@@ -169,7 +169,7 @@ void main()
 	// Enable GPIO (all output, ena = 0)
 	reg_gpio_ena = 0x0000;
 	reg_gpio_pu = 0x0000;
-	reg_gpio_pd = 0xffff;
+	reg_gpio_pd = 0x0000;
 	reg_gpio_data = 0xffff;
 
 	// Set UART clock to 9600 baud
@@ -202,7 +202,8 @@ void main()
 //	        reg_gpio_data = 0x0001;
 //	        for (i = 0; i < 16; i++) {
 //		    reg_gpio_data <<= 1;
-//		    for (j = 0; j < 17000; j++);
+        for (j = 0; j < 170000; j++);
+        reg_gpio_data = 0xffff;
 //	        }
 	
 //	        reg_gpio_data = 0x8000;
