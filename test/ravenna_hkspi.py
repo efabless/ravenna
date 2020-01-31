@@ -66,22 +66,22 @@ def is_busy(device):
     return get_status(device) & SR_WIP
 
 
-if len(sys.argv) < 2:
-    print("Usage: raptor_flash.py <file>")
-    sys.exit()
+# if len(sys.argv) < 2:
+#    print("Usage: raptor_flash.py <file>")
+#    sys.exit()
 
-file_path = sys.argv[1]
+# file_path = sys.argv[1]
 
-if not os.path.isfile(file_path):
-    print("File not found.")
-    sys.exit()
+#if not os.path.isfile(file_path):
+#    print("File not found.")
+#    sys.exit()
 
 spi = SpiController(cs_count=1, turbo=True)
 # spi.configure(vendor=0x0403, product=0x6014, interface=1)
 spi.configure('ftdi://::/1')
 slave = spi.get_port(cs=0, freq=12E6, mode=0)  # Chip select is 0 -- corresponds to D3
 
-vendor = slave.exchange([0x40, 0x01], 3)
+vendor = slave.exchange([0x48, 0x01], 1)
 print("vendor = {}".format(binascii.hexlify(vendor)))
 
 # if jedec[0:1] != bytes.fromhex('ef'):
