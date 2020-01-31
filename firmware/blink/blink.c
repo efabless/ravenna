@@ -179,41 +179,25 @@ void main()
 //        reg_uart_clkdiv = 10417;
 //    #endif
 
-	// This should appear on the LCD display 4x20 characters.
-//	reg_gpio_data = 0x2222;
-//	for (j = 0; j < 50000 * m; j++);
-//	reg_gpio_data = 0x4444;
-//	for (j = 0; j < 50000 * m; j++);
-//	reg_gpio_data = 0x8888;
-//	for (j = 0; j < 50000 * m; j++);
-
-	// Follow this with an LED pattern
-//	reg_gpio_ena = 0x0000;		// 1 = input, 0 = output
-
-//	for (j = 0; j < 170000 * m; j++);
+    for (j = 0; j < 170000; j++);
 
 	while (1) {
-
-		reg_gpio_data = 0xffff;
-
-	    // Update LEDs
-//	    r = m >> 1;
-//	    while (1) {
-//	        reg_gpio_data = 0x0001;
-//	        for (i = 0; i < 16; i++) {
-//		    reg_gpio_data <<= 1;
+        reg_gpio_data = 0x0000;
         for (j = 0; j < 170000; j++);
-        reg_gpio_data = 0xffff;
-//	        }
-	
-//	        reg_gpio_data = 0x8000;
-//	        for (i = 0; i < 16; i++) {
-//		    reg_gpio_data >>= 1;
-//		    for (j = 0; j < 17000; j++);
-//		}
-//		r >>= 1;
-//		if (r == 0) break;
-//	    }
+        reg_gpio_data = 0x0001;
+        for (j = 0; j < 170000; j++);
+        reg_gpio_data = 0x0002;
+        for (j = 0; j < 170000; j++);
+        reg_gpio_data = 0x0004;
+        for (j = 0; j < 170000; j++);
+        reg_gpio_data = 0x0008;
+        for (j = 0; j < 170000; j++);
+        reg_gpio_data = 0x0004;
+        for (j = 0; j < 170000; j++);
+        reg_gpio_data = 0x0002;
+        for (j = 0; j < 170000; j++);
+        reg_gpio_data = 0x0001;
+        for (j = 0; j < 170000; j++);
 	}
 }
 
