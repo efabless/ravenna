@@ -183,21 +183,21 @@ void main()
 
 	while (1) {
         reg_gpio_data = 0x0000;
-        for (j = 0; j < 170000; j++);
+        for (j = 0; j < 70000; j++);
         reg_gpio_data = 0x0001;
-        for (j = 0; j < 170000; j++);
+        for (j = 0; j < 70000; j++);
         reg_gpio_data = 0x0002;
-        for (j = 0; j < 170000; j++);
+        for (j = 0; j < 70000; j++);
         reg_gpio_data = 0x0004;
-        for (j = 0; j < 170000; j++);
+        for (j = 0; j < 70000; j++);
         reg_gpio_data = 0x0008;
-        for (j = 0; j < 170000; j++);
+        for (j = 0; j < 70000; j++);
         reg_gpio_data = 0x0004;
-        for (j = 0; j < 170000; j++);
+        for (j = 0; j < 70000; j++);
         reg_gpio_data = 0x0002;
-        for (j = 0; j < 170000; j++);
+        for (j = 0; j < 70000; j++);
         reg_gpio_data = 0x0001;
-        for (j = 0; j < 170000; j++);
+        for (j = 0; j < 70000; j++);
 	}
 }
 
