@@ -251,7 +251,7 @@ void main()
         // for (j = 0; j < 17000; j++); // 2 sec
         if ((count && 0xff) == 0)
         {
-            print_hex(count);
+            print_hex(count, 4);
             print("\n");
         }
     }
