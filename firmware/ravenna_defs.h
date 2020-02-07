@@ -10,7 +10,10 @@
 // know that because "sram" is a linker symbol from sections.lds.
 extern uint32_t sram;
 
-// Memory map definitions
+extern uint32_t flashio_worker_begin;
+extern uint32_t flashio_worker_end;
+
+// Mermory map definitions
 
 #define reg_spictrl (*(volatile uint32_t*)0x02000000)
 #define reg_uart_data (*(volatile uint32_t*)0x0300007c)
