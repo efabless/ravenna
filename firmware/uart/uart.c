@@ -211,15 +211,12 @@ void cmd_echo()
 
 void main()
 {
-	uint32_t i, j, m, r, mode;
-	uint32_t data;
+	uint32_t i;
 
 	uint32_t count;
 
 	set_flash_latency(8);
 
-	mode = 1;
-	m = 1;
 
 	// NOTE: Crystal on testboard running at 12.5MHz
 	// Internal clock is 8x crystal, or 100MHz
@@ -237,7 +234,7 @@ void main()
 
 
 	// Need boot-up time for the display;  give it 4 seconds
-	for (j = 0; j < 700000 * m; j++);
+    //	for (j = 0; j < 700000 * m; j++);
 
 	// This should appear on the LCD display 4x20 characters.
     print_ln("Starting...\n");
@@ -250,9 +247,9 @@ void main()
     print("\n\n");
 
     for(count=0;;count++) {
-		reg_gpio_data = (count >>16);
-        for (j = 0; j < 17000 * m; j++); // 2 sec
-        print(".");
+		reg_gpio_data = (count >> 16);
+//        for (j = 0; j < 17000; j++); // 2 sec
+        if (count && 0xff) == 0 putchar('.');
     }
 }
 
