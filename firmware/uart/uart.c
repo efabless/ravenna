@@ -208,6 +208,9 @@ void cmd_echo()
 		    putchar('\n');
         else
 		    putchar(c);
+		    print("  ")
+		    print_hex(c, 2);
+		    print("\r\n");
     }
 }
 
@@ -233,7 +236,7 @@ void main()
 	reg_gpio_data = 0x0003;
 
 	// Need boot-up time for the display;  give it 4 seconds
-    for (j = 0; j < 17000; j++); // 2 sec
+    for (j = 0; j < 34000; j++); // 2 sec
 
 	reg_gpio_data = 0x000f;
 
