@@ -147,9 +147,10 @@ int main()
                 {
                     if (buf[i] == '\n')
                         putchar('\r');
+
                     putchar(buf[i++]);
                 }
-                fflush(stdout);
+//                fflush(stdout);
             }
         }
         c = getch();
