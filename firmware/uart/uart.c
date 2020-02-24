@@ -208,7 +208,7 @@ void cmd_echo()
 		    putchar('\n');
         else
 		    putchar(c);
-		    print("  ")
+		    print("  ");
 		    print_hex(c, 2);
 		    print("\r\n");
     }
