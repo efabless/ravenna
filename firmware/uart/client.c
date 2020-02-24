@@ -110,7 +110,7 @@ char getch()
 int main()
 {
 
-    char *portname = "/dev/ttyUSB1";
+    char *portname = "/dev/ttyUSB0";
     unsigned char buf[80], data, last_data;
     char c = ' ';
     int n, i;
