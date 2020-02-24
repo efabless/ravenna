@@ -7,6 +7,8 @@ TOOLCHAIN_PATH = /opt/riscv32imc/bin/
 
 PATTERN = uart
 
+all: hex client
+
 hex:  ${PATTERN:=.hex}
 
 %.elf: %.c ../sections.lds ../start.s
