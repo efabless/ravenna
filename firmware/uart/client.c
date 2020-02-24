@@ -146,12 +146,12 @@ int main()
                     if (buf[i] == '\n')
                         putchar('\r');
                     putchar(buf[i++]);
-                    fflush(stdout);
                 }
+                fflush(stdout);
             }
         }
         c = getch();
-//        n = write(fd, &c, 1);
+        n = write(fd, &c, 1);
      } while (c != 'q');
 
 }
