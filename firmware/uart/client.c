@@ -101,10 +101,10 @@ char getch()
     int r;
     unsigned char c;
     if ((r = read(0, &c, sizeof(c))) < 0) {
-        printf('1');
+        printf("1");
         return r;
     } else {
-        printf('0');
+        printf("0");
         return c;
     }
 }
