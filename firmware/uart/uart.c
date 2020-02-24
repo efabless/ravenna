@@ -236,9 +236,9 @@ void main()
     print_ln("Starting...\n");
 
     print("Press ENTER to continue..\n");
-    // while (getchar() != '\r') {}
+    while (getchar() != '\r') {}
 
-    //    cmd_echo();
+    cmd_echo();
 
     print("\n\n");
 
