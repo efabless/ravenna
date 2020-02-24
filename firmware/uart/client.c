@@ -101,10 +101,8 @@ char getch()
     int r;
     unsigned char c;
     if ((r = read(0, &c, sizeof(c))) < 0) {
-        printf("1");
         return r;
     } else {
-        printf("0");
         return c;
     }
 }
@@ -128,7 +126,7 @@ int main()
 
     if (fd < 0)
     {
-            printf("error %d opening %s: %s", errno, portname, strerror (errno));
+            fprintf(stderr, "error %d opening %s: %s", errno, portname, strerror (errno));
             return 1;
     }
 
@@ -148,6 +146,7 @@ int main()
                     if (buf[i] == '\n')
                         putchar('\r');
                     putchar(buf[i++]);
+                    fflush(stdout);
                 }
             }
         }
