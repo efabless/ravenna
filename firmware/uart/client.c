@@ -149,7 +149,7 @@ int main()
             }
         }
         c = getch();
-        n = write(fd, &c, 1);
+//        n = write(fd, &c, 1);
      } while (c != 'q');
 
 }
