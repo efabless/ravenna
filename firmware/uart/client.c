@@ -133,7 +133,7 @@ int main()
     set_interface_attribs (fd, B9600, 0);  // set speed to 115,200 bps, 8n1 (no parity)
     set_blocking (fd, 0);                // set no blocking
 
-    printf("press 'q' to quit...\n");
+    printf("press 'q' to quit...\n\r");
 
     do {
         while (!kbhit()) {
