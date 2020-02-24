@@ -211,36 +211,32 @@ void cmd_echo()
 
 void main()
 {
-	uint32_t i;
+	uint32_t i,j;
 
 	uint32_t count;
 
 	set_flash_latency(8);
 
-
-	// NOTE: Crystal on testboard running at 12.5MHz
-	// Internal clock is 8x crystal, or 100MHz
+	// NOTE: Crystal on testboard running at 8MHz
+	// Internal clock is 8x crystal, or 64MHz
 	// Divided by clkdiv is 9.6 kHz
-	// So at this crystal rate, use clkdiv = 10417 for 9600 baud.
+	// So at this crystal rate, use clkdiv = 6667 for 9600 baud.
 
 	// Set UART clock to 9600 baud
-    //	reg_uart_clkdiv = 10417;
-//	reg_uart_clkdiv = 8333;
 	reg_uart_clkdiv = 6667;
 
-	reg_gpio_enb
-	 = 0x0000;
+	reg_gpio_enb = 0x0000;
 	reg_gpio_data = 0x000f;
 
-
 	// Need boot-up time for the display;  give it 4 seconds
-    //	for (j = 0; j < 700000 * m; j++);
+    for (j = 0; j < 17000; j++); // 2 sec
+
 
 	// This should appear on the LCD display 4x20 characters.
     print_ln("Starting...\n");
 
     print("Press ENTER to continue..\n");
-    while (getchar() != '\r') {}
+    // while (getchar() != '\r') {}
 
     //    cmd_echo();
 
