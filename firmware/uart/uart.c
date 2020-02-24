@@ -176,7 +176,11 @@ char getchar_prompt(char *prompt)
 
 char getchar()
 {
-	return getchar_prompt(0);
+	int32_t c = -1;
+	while (c == -1) {
+		c = reg_uart_data;
+	}
+	return c;
 }
 
 // ----------------------------------------------------------------------
@@ -226,14 +230,15 @@ void main()
 	reg_uart_clkdiv = 6667;
 
 	reg_gpio_enb = 0x0000;
-	reg_gpio_data = 0x000f;
+	reg_gpio_data = 0x0003;
 
 	// Need boot-up time for the display;  give it 4 seconds
     for (j = 0; j < 17000; j++); // 2 sec
 
+	reg_gpio_data = 0x000f;
 
 	// This should appear on the LCD display 4x20 characters.
-    print_ln("Starting...\n");
+    print("Starting...\n");
 
     print("Press ENTER to continue..\n");
     while (getchar() != '\r') {}
