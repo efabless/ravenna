@@ -145,8 +145,8 @@ int main()
                 i = 0;
                 while (buf[i] != '\0')
                 {
-//                    if (buf[i] == '\n')
-//                        putchar('\r');
+                    if (buf[i] == '\n')
+                        putchar('\r');
                     putchar(buf[i++]);
                 }
                 fflush(stdout);
