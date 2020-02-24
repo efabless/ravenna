@@ -150,47 +150,6 @@ int main()
         }
         c = getch();
         n = write(fd, &c, 1);
-        if (c == '7') {
-            if ((fptr = fopen("photo.jpg", "wb+")) == NULL) {
-                printf("Error opening file\n");
-                exit(1);
-            }
-            read(fd, &len1, sizeof(len1));
-            read(fd, &len2, sizeof(len2));
-            read(fd, &len3, sizeof(len3));
-            printf("0x%02x 0x%02x 0x%02x\n\r", len1, len2, len3);
-            length = ((len3 << 16) | (len2 << 8) | len1) & 0x07fffff;
-            printf("Length = 0x%06x\n\r", length);
-            read(fd, &data, sizeof(data));
-            if (data != 0xff) {
-                printf("Error transferring data - data = 0x%02x\n\r", data);
-                while (read(fd, buf, sizeof(buf))) {};
-            }
-            i = length;
-            is_header = 0;
-            read(fd, &data, sizeof(data));
-            i--;
-            while(i--) {
-                last_data = data;
-                while (read(fd, &data, sizeof(data)) == 0) {};
-                data &= 0xff;
-                if (is_header)
-                    fwrite(&data, sizeof(data),1,fptr);
-                else if ((data == 0xd8) && (last_data == 0xff)) {
-                    is_header = 1;
-                    fwrite(&last_data, sizeof(last_data),1,fptr);
-                    fwrite(&data, sizeof(data),1,fptr);
-                }
-                if ((i & 0xff) == 0)
-                    printf("Bytes remaining = 0x%06x\n\r", i);
-                if ((data == 0xd9) && (last_data == 0xff))
-                        break;
-            }
-            fclose(fptr);
-            printf("File written successfully.\n\r");
-        } else if (c == 'v') {
-            system("eog photo.jpg");
-        }
-    } while (c != 'q');
+     } while (c != 'q');
 
 }
