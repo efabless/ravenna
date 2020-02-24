@@ -211,6 +211,7 @@ void cmd_echo()
 //		    print("  ");
 //		    print_hex(c, 2);
 //		    print("\r\n");
+		    print("\n");
     }
 }
 
