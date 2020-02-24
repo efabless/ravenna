@@ -44,8 +44,8 @@ void set_flash_latency(uint8_t value)
 
 void putchar(char c)
 {
-	if (c == '\n')
-		putchar('\r');
+//	if (c == '\n')
+//		putchar('\r');
 	reg_uart_data = c;
 }
 
@@ -204,9 +204,9 @@ void cmd_echo()
 	print("Return to menu by sending '!'\n\n");
 	char c;
 	while ((c = getchar()) != '!') {
-		if (c == '\r')
-		    putchar('\n');
-        else
+//		if (c == '\r')
+//		    putchar('\n');
+//        else
 		    putchar(c);
 		    print("  ");
 		    print_hex(c, 2);
