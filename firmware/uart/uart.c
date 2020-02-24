@@ -208,9 +208,9 @@ void cmd_echo()
 //		    putchar('\n');
 //        else
 		    putchar(c);
-		    print("  ");
-		    print_hex(c, 2);
-		    print("\r\n");
+//		    print("  ");
+//		    print_hex(c, 2);
+//		    print("\r\n");
     }
 }
 
