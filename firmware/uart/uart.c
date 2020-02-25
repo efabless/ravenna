@@ -236,9 +236,10 @@ void main()
 	reg_gpio_enb = 0x0000;
 	reg_gpio_data = 0x0001;
 
-    for (i = 0; i < 3; i++) {
+    for (i = 1; i < 5; i++) {
         for (j = 0; j < 34000; j++); // 2 sec
-	    reg_gpio_data = (reg_gpio_data << 1) & 0x0001;
+//	    reg_gpio_data = (reg_gpio_data << 1) & 0x0001;
+	    reg_gpio_data = (0x0001 << i);
     }
 
 	// This should appear on the LCD display 4x20 characters.
