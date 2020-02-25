@@ -147,7 +147,6 @@ int main()
                 {
                     if (buf[i] == '\n') {
                         putchar('\r');
-                        putchar('\n');
                     }
 
                     putchar(buf[i++]);
