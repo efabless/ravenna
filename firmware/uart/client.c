@@ -145,8 +145,10 @@ int main()
                 i = 0;
                 while (buf[i] != '\0')
                 {
-                    if (buf[i] == '\n')
+                    if (buf[i] == '\n') {
                         putchar('\r');
+                        putchar('\n');
+                    }
 
                     putchar(buf[i++]);
                 }
