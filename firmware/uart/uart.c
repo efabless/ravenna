@@ -234,12 +234,12 @@ void main()
 	reg_uart_clkdiv = 6667;
 
 	reg_gpio_enb = 0x0000;
-	reg_gpio_data = 0x0003;
+	reg_gpio_data = 0x0001;
 
-	// Need boot-up time for the display;  give it 4 seconds
-    for (j = 0; j < 34000; j++); // 2 sec
-
-	reg_gpio_data = 0x000f;
+    for (i = 0; i < 3; i++) {
+        for (j = 0; j < 34000; j++); // 2 sec
+	    reg_gpio_data = (reg_gpio_data >> 1) & 0x0001;
+    }
 
 	// This should appear on the LCD display 4x20 characters.
     print("Starting...\n");
