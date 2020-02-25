@@ -150,6 +150,7 @@ int main()
 
                     putchar(buf[i++]);
                 }
+                fflush(stdout);
             }
         }
         c = getch();
