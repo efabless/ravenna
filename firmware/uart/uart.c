@@ -249,7 +249,9 @@ void main()
     print("Press ENTER to continue..\n");
     while (getchar() != '\r') {}
 
+    reg_gpio_data = 0x000a;
     cmd_echo();
+    reg_gpio_data = 0x0000;
 
     print("\n\n");
 
