@@ -242,6 +242,8 @@ void main()
 	    reg_gpio_data = (0x0001 << i);
     }
 
+    reg_gpio_data = 0x000f;
+
 	// This should appear on the LCD display 4x20 characters.
     print("Starting...\n");
 
