@@ -209,7 +209,7 @@ void cmd_echo()
 //        else
 		    putchar(c);
 		    print("  ");
-		    print_hex(c, 2);
+		    print_hex(c, 4);
 //		    print("\r\n");
 		    print("\n");
 		    reg_gpio_data = c;
