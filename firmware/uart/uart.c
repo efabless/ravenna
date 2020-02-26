@@ -42,7 +42,7 @@ void set_flash_latency(uint8_t value)
 
 //--------------------------------------------------------------
 
-void putchar(char c)
+void putchar(uint32_t c)
 {
 //	if (c == '\n')
 //		putchar('\r');
