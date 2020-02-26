@@ -148,7 +148,7 @@ int main()
                         putchar('\r');
                     }
 
-                    putchar(buf[i++]);
+//                    putchar(buf[i++]);
                     printf("%04x\n", c);
                 }
                 fflush(stdout);
