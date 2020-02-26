@@ -202,16 +202,16 @@ void cmd_read_flash_regs_print(uint32_t addr, const char *name)
 void cmd_echo()
 {
 	print("Return to menu by sending '!'\n\n");
-	char c;
+	uint32_t c;
 	while ((c = getchar()) != '!') {
 //		if (c == '\r')
 //		    putchar('\n');
 //        else
-		    putchar(c);
-		    print("  ");
-		    print_hex(c, 4);
+//		    putchar(c);
+//		    print("  ");
+//		    print_hex(c, 4);
 //		    print("\r\n");
-		    print("\n");
+//		    print("\n");
 		    reg_gpio_data = c;
     }
 }
