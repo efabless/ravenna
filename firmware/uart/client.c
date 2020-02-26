@@ -101,7 +101,7 @@ char getch()
     int r;
     unsigned char c;
     if ((r = read(0, &c, sizeof(c))) < 0) {
-        return r;
+        return '*';
     } else {
         return c;
     }
