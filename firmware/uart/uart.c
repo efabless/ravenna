@@ -207,7 +207,7 @@ void cmd_echo()
 //		if (c == '\r')
 //		    putchar('\n');
 //        else
-//		    putchar(c);
+		    putchar(c);
 //		    print("  ");
 //		    print_hex(c, 4);
 //		    print("\r\n");
