@@ -149,7 +149,7 @@ int main()
                     }
 
 //                    putchar(buf[i++]);
-                    printf("%04x\n", c);
+                    printf("%04x\n", buf[i++]);
                 }
                 fflush(stdout);
             }
