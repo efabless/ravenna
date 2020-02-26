@@ -174,7 +174,7 @@ char getchar_prompt(char *prompt)
 	return c;
 }
 
-char getchar()
+uint32_t getchar()
 {
 	int32_t c = -1;
 	while (c == -1) {
