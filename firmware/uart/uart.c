@@ -232,7 +232,7 @@ void main()
 	// So at this crystal rate, use clkdiv = 6667 for 9600 baud.
 
 	// Set UART clock to 9600 baud
-	reg_uart_clkdiv = 6667;
+	reg_uart_clkdiv = 6666;
 
 	reg_gpio_enb = 0x0000;
 	reg_gpio_data = 0x0001;
