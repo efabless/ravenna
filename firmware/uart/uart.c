@@ -208,11 +208,8 @@ void cmd_echo()
 //		    putchar('\n');
 //        else
 		    putchar(c);
-//		    print("  ");
-//		    print_hex(c, 4);
-//		    print("\r\n");
-//		    print("\n");
-		    reg_gpio_data = c >> 4;
+//		    reg_gpio_data = c >> 4;
+		    reg_gpio_data = c;
     }
 }
 
