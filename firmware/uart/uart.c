@@ -212,7 +212,7 @@ void cmd_echo()
 //		    print_hex(c, 4);
 //		    print("\r\n");
 //		    print("\n");
-		    reg_gpio_data = c;
+		    reg_gpio_data = c >> 4;
     }
 }
 
