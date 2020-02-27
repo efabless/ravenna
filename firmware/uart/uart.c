@@ -204,12 +204,13 @@ void cmd_echo()
 	print("Return to menu by sending '!'\n\n");
 	uint32_t c;
 	while ((c = getchar()) != '!') {
-//		if (c == '\r')
-//		    putchar('\n');
-//        else
+		if (c == '\r')
+		    putchar('\n');
+        else {
 		    putchar(c);
 //		    reg_gpio_data = c >> 4;
 		    reg_gpio_data = c;
+        }
     }
 }
 
