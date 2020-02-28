@@ -23,8 +23,8 @@ hex:  ${PATTERN:=.hex}
 client: client.c
 	gcc client.c -o client
 
-flash: %.hex
-	python3 ../../test/ravenna_flash.py $<
+flash: clock.hex
+	python3 ../../test/ravenna_flash.py clock.hex
 
 # ---- Clean ----
 
