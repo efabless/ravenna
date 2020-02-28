@@ -225,6 +225,7 @@ void main()
 	set_flash_latency(8);
 
     reg_xtal_out_dest = 0x0001;
+    reg_pll_out_dest = 0x0001;
 
     // NOTE: Crystal on testboard running at 8MHz
 	// Internal clock is 8x crystal, or 64MHz
@@ -232,7 +233,7 @@ void main()
 	// So at this crystal rate, use clkdiv = 6667 for 9600 baud.
 
 	// Set UART clock to 9600 baud
-//	reg_uart_clkdiv = 6667;
+    //	reg_uart_clkdiv = 6667;
 	reg_uart_clkdiv = 6600;
 
 	reg_gpio_enb = 0x0000;
