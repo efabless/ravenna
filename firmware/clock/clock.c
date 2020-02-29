@@ -224,6 +224,10 @@ void main()
 
 	set_flash_latency(8);
 
+	reg_gpio_enb = 0x0000;
+	reg_gpio_pub = 0xffff;
+	reg_gpio_pdb = 0xffff;
+
     reg_xtal_out_dest = 0x0001;
     reg_pll_out_dest = 0x0001;
 
@@ -236,7 +240,6 @@ void main()
     //	reg_uart_clkdiv = 6667;
 	reg_uart_clkdiv = 6600;
 
-	reg_gpio_enb = 0x0000;
 	reg_gpio_data = 0x0001;
 
     for (i = 1; i < 5; i++) {
