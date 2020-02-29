@@ -229,7 +229,10 @@ void main()
 	reg_gpio_pdb = 0xffff;
 
     reg_xtal_out_dest = 0x0001;
-    reg_pll_out_dest = 0x0001;
+//    reg_pll_out_dest = 0x0001; // core PLL clock to GPIO8
+    reg_pll_out_dest = 0x0010;  // PLL or XCLK to GPIO9
+
+    reg_spi_enables = 0x0107;  // PLL bypass
 
     // NOTE: Crystal on testboard running at 8MHz
 	// Internal clock is 8x crystal, or 64MHz
