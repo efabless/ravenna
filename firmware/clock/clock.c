@@ -230,7 +230,7 @@ void main()
 
     reg_xtal_out_dest = 0x0001;
 //    reg_pll_out_dest = 0x0001; // core PLL clock to GPIO8
-    reg_pll_out_dest = 0x0010;  // PLL or XCLK to GPIO9
+    reg_pll_out_dest = 0x0002;  // PLL or XCLK to GPIO9
 
     reg_spi_enables = 0x0107;  // PLL bypass
 
