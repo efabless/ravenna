@@ -225,14 +225,14 @@ void main()
 	set_flash_latency(8);
 
 	reg_gpio_enb = 0x0000;
-	reg_gpio_pub = 0xffff;
-	reg_gpio_pdb = 0xffff;
+//	reg_gpio_pub = 0xffff;
+//	reg_gpio_pdb = 0xffff;
 
     reg_xtal_out_dest = 0x0001;
 //    reg_pll_out_dest = 0x0001; // core PLL clock to GPIO8
-    reg_pll_out_dest = 0x0002;  // PLL or XCLK to GPIO9
+//    reg_pll_out_dest = 0x0002;  // PLL or XCLK to GPIO9
 
-    reg_spi_enables = 0x0107;  // PLL bypass
+//    reg_spi_enables = 0x0107;  // PLL bypass
 
     // NOTE: Crystal on testboard running at 8MHz
 	// Internal clock is 8x crystal, or 64MHz
@@ -244,6 +244,12 @@ void main()
 	reg_uart_clkdiv = 6600;
 
 	reg_gpio_data = 0x0001;
+
+	for (i = 0; i < 11; i++) {
+	    print_hex(i, 2);
+	    print(" : ");
+	    print_hex((reg_spi_commconfig + i) & 0xff, 2);
+	}
 
     for (i = 1; i < 5; i++) {
         for (j = 0; j < 34000; j++); // 2 sec
