@@ -179,7 +179,8 @@ void main()
 //        reg_uart_clkdiv = 10417;
 //    #endif
 
-    for (j = 0; j < 170000; j++);
+//    for (j = 0; j < 170000; j++);
+    for (j = 0; j < 35000; j++);
 
 	while (1) {
         reg_gpio_data = 0x0000;
