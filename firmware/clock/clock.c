@@ -263,13 +263,14 @@ void main()
         ptr = 0x03000080;
 
     	for (i = 0; i < 11; i++) {
-            print_hex(i, 2);
-            print(" : ");
+            print("0x");
+            print_hex(p, 8);
+            print(" : 0x");
             print_hex(*ptr++, 2);
             print("\n");
 	    }
 
-        for (j = 0; j < 70000; j++); // 4 sec
+        for (j = 0; j < 150000; j++);
 
     }
 }
