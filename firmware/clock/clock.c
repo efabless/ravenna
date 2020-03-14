@@ -249,14 +249,6 @@ void main()
 
     volatile uint8_t *ptr = 0x03000080;
 
-	for (i = 0; i < 11; i++) {
-	    print_hex(i, 2);
-	    print(" : ");
-	    print_hex(*ptr++ & 0xff, 2);
-        print("\n");
-
-	}
-
     for (i = 1; i < 5; i++) {
         for (j = 0; j < 34000; j++); // 2 sec
 	    reg_gpio_data = (0x0001 << i);
@@ -264,6 +256,17 @@ void main()
 
     reg_gpio_data = 0x000f;
 
-    while (1) {}
+    while (1) {
+
+    	for (i = 0; i < 11; i++) {
+            print_hex(i, 2);
+            print(" : ");
+            print_hex(*ptr++ & 0xff, 2);
+            print("\n");
+	    }
+
+        for (j = 0; j < 70000; j++); // 4 sec
+
+    }
 }
 
