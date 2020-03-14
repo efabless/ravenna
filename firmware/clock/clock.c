@@ -240,15 +240,19 @@ void main()
 	// So at this crystal rate, use clkdiv = 6667 for 9600 baud.
 
 	// Set UART clock to 9600 baud
-    //	reg_uart_clkdiv = 6667;
-	reg_uart_clkdiv = 6600;
+    reg_uart_clkdiv = 6667;
+//	reg_uart_clkdiv = 6600;
 
 	reg_gpio_data = 0x0001;
+
+    print("Starting...\n");
+
+    volatile uint8_t *ptr = 0x03000080;
 
 	for (i = 0; i < 11; i++) {
 	    print_hex(i, 2);
 	    print(" : ");
-	    print_hex((reg_spi_commconfig + i) & 0xff, 2);
+	    print_hex(*ptr++ & 0xff, 2);
         print("\n");
 
 	}
