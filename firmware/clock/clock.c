@@ -270,8 +270,17 @@ void main()
             print("\n");
 	    }
 
+        ptr = 0x03000098;
+        print("0x");
+        print_hex(ptr, 8);
+        print(" : 0x");
+        print_hex(*ptr++, 2);
+        print("\n");
+
         for (j = 0; j < 150000; j++);
 
     }
+
+
 }
 
