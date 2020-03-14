@@ -249,6 +249,8 @@ void main()
 	    print_hex(i, 2);
 	    print(" : ");
 	    print_hex((reg_spi_commconfig + i) & 0xff, 2);
+        print("\n");
+
 	}
 
     for (i = 1; i < 5; i++) {
