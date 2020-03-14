@@ -221,6 +221,8 @@ void main()
 	uint32_t i,j;
 
 	uint32_t count;
+	volatile uint8_t *ptr;
+
 
 	set_flash_latency(8);
 
@@ -247,8 +249,6 @@ void main()
 
     print("Starting...\n");
 
-    volatile uint8_t *ptr = 0x03000080;
-
     for (i = 1; i < 5; i++) {
         for (j = 0; j < 34000; j++); // 2 sec
 	    reg_gpio_data = (0x0001 << i);
@@ -260,10 +260,12 @@ void main()
 
         print("\nhk spi registers...\n");
 
+        ptr = 0x03000080;
+
     	for (i = 0; i < 11; i++) {
             print_hex(i, 2);
             print(" : ");
-            print_hex(*ptr++ & 0xff, 2);
+            print_hex(*ptr++, 2);
             print("\n");
 	    }
 
