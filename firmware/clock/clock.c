@@ -258,6 +258,8 @@ void main()
 
     while (1) {
 
+        print("\nhk spi registers...\n");
+
     	for (i = 0; i < 11; i++) {
             print_hex(i, 2);
             print(" : ");
