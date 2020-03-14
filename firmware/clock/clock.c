@@ -264,7 +264,7 @@ void main()
 
     	for (i = 0; i < 11; i++) {
             print("0x");
-            print_hex(p, 8);
+            print_hex(ptr, 8);
             print(" : 0x");
             print_hex(*ptr++, 2);
             print("\n");
