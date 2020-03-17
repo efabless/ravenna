@@ -1,0 +1,7 @@
+(sym_lib_table
+  (lib (name ravenna-eagle-import)(type Legacy)(uri ${KIPRJMOD}/ravenna-eagle-import.lib)(options "")(descr ""))
+  (lib (name 629105150521)(type Legacy)(uri "/Users/jeffdi/Projects/ravenna evb/parts and footprints/629105150521.lib")(options "")(descr ""))
+  (lib (name 219-3LPSTR)(type Legacy)(uri "/Users/jeffdi/Projects/ravenna evb/parts and footprints/219-3LPSTR.lib")(options "")(descr ""))
+  (lib (name TMUX1574DYYR)(type Legacy)(uri "/Users/jeffdi/Projects/ravenna evb/parts and footprints/TMUX1574DYYR.lib")(options "")(descr ""))
+  (lib (name dk_Oscillators)(type Legacy)(uri /Users/jeffdi/Projects/digikey-kicad-library/digikey-symbols/dk_Oscillators.lib)(options "")(descr ""))
+)
