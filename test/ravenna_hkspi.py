@@ -76,13 +76,18 @@ def is_busy(device):
 #    print("File not found.")
 #    sys.exit()
 
-spi = SpiController(cs_count=1, turbo=True)
-# spi.configure(vendor=0x0403, product=0x6014, interface=1)
+spi = SpiController()
 spi.configure('ftdi://::/1')
-slave = spi.get_port(cs=0, freq=12E6, mode=0)  # Chip select is 0 -- corresponds to D3
+slave = spi.get_port(cs=0)  # Chip select is 0 -- corresponds to D3
 
 vendor = slave.exchange([0x48, 0x01], 1)
 print("vendor = {}".format(binascii.hexlify(vendor)))
+
+mfg = slave.exchange([0x48, 0x02], 1)
+print("mfg = {}".format(binascii.hexlify(mfg)))
+
+product = slave.exchange([0x48, 0x03], 1)
+print("product = {}".format(binascii.hexlify(product)))
 
 # if jedec[0:1] != bytes.fromhex('ef'):
 #     print("Winbond SRAM not found")
