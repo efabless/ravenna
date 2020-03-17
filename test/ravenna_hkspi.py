@@ -80,7 +80,7 @@ spi = SpiController()
 spi.configure('ftdi://::/1')
 slave = spi.get_port(cs=0)  # Chip select is 0 -- corresponds to D3
 
-vendor = slave.exchange([0x48, 0x01], 1)
+vendor = slave.exchange([0x50, 0x01], 2)
 print("vendor = {}".format(binascii.hexlify(vendor)))
 
 mfg = slave.exchange([0x48, 0x02], 1)
