@@ -57,9 +57,10 @@ TIMINGS = {'page': (0.0015, 0.003),  # 1.5/3 ms
 #             SerialFlash.FEAT_SUBSECTERASE |
 #             SerialFlash.FEAT_CHIPERASE)
 
+RAVENNA_PASSTHRU = 0xC4
 
 def get_status(device):
-    return int.from_bytes(device.exchange([CMD_READ_STATUS],1), byteorder='big')
+    return int.from_bytes(device.exchange([RAVENNA_PASSTHRU, CMD_READ_STATUS],1), byteorder='big')
 
 
 def is_busy(device):
@@ -80,7 +81,7 @@ spi = SpiController()
 spi.configure('ftdi://::/1')
 slave = spi.get_port(cs=0)  # Chip select is 0 -- corresponds to D3
 
-vendor = slave.exchange([0x50, 0x01], 2)
+vendor = slave.exchange([0x48, 0x01], 1)
 print("vendor = {}".format(binascii.hexlify(vendor)))
 
 mfg = slave.exchange([0x48, 0x02], 1)
@@ -92,9 +93,9 @@ print("product = {}".format(binascii.hexlify(product)))
 # if jedec[0:1] != bytes.fromhex('ef'):
 #     print("Winbond SRAM not found")
 #     sys.exit()
-#
-# print("status = 0x{}".format(get_status(slave), '02x'))
-#
+
+print("status = 0x{}".format(get_status(slave), '02x'))
+
 # print("Erasing chip...")
 # slave.write([CMD_WRITE_ENABLE])
 # slave.write([CMD_ERASE_CHIP])
