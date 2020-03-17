@@ -24,7 +24,7 @@ client: client.c
 	gcc client.c -o client
 
 flash: uart.hex
-	python3 ../../test/ravenna_flash.py uart.hex
+	python3 ../../test/ravenna_hkspi.py uart.hex
 
 # ---- Clean ----
 

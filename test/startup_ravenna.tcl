@@ -347,7 +347,7 @@ proc ftdi::flash_write_hex {device hexfile {doerase true} {debug false}} {
 # Open the device
 
 setid 24596 1027	;# FTDI FT232H
-verbose 3
+# verbose 3
 puts stdout "X"
 set ravenna [opendev A]
 puts stdout "Y"

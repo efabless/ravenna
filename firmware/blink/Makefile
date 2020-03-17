@@ -22,9 +22,7 @@ client: client.c
 	gcc client.c -o client
 
 flash: blink.hex
-	python3 ../../test/ravenna_flash.py blink.hex
-
-flash2: blink.hex
+# 	python3 ../../test/ravenna_flash.py blink.hex
 	python3 ../../test/ravenna_hkspi.py blink.hex
 
 # ---- Clean ----

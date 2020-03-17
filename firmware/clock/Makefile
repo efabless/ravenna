@@ -24,7 +24,8 @@ client: client.c
 	gcc client.c -o client
 
 flash: clock.hex
-	python3 ../../test/ravenna_flash.py clock.hex
+# 	python3 ../../test/ravenna_flash.py clock.hex
+	python3 ../../test/ravenna_hkspi.py clock.hex
 
 # ---- Clean ----
 
