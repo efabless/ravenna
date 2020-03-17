@@ -72,6 +72,7 @@ def report_status(jedec):
         print("status reg_2 = {}".format(hex(int.from_bytes(status, byteorder='big'))))
         # print("status = {}".format(hex(from_bytes(slave.exchange([CMD_READ_STATUS], 2)[1], byteorder='big'))))
 
+
 def is_busy(device):
     return get_status(device) & SR_WIP
 

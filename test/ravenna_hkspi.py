@@ -59,6 +59,7 @@ TIMINGS = {'page': (0.0015, 0.003),  # 1.5/3 ms
 
 RAVENNA_PASSTHRU = 0xC4
 
+
 def get_status(device):
     return int.from_bytes(device.exchange([RAVENNA_PASSTHRU, CMD_READ_STATUS],1), byteorder='big')
 
@@ -67,15 +68,15 @@ def is_busy(device):
     return get_status(device) & SR_WIP
 
 
-# if len(sys.argv) < 2:
-#    print("Usage: raptor_flash.py <file>")
-#    sys.exit()
+if len(sys.argv) < 2:
+   print("Usage: raptor_flash.py <file>")
+   sys.exit()
 
-# file_path = sys.argv[1]
+file_path = sys.argv[1]
 
-#if not os.path.isfile(file_path):
-#    print("File not found.")
-#    sys.exit()
+if not os.path.isfile(file_path):
+   print("File not found.")
+   sys.exit()
 
 spi = SpiController()
 spi.configure('ftdi://::/1')
@@ -90,22 +91,27 @@ print("mfg = {}".format(binascii.hexlify(mfg)))
 product = slave.exchange([0x48, 0x03], 1)
 print("product = {}".format(binascii.hexlify(product)))
 
-# if jedec[0:1] != bytes.fromhex('ef'):
-#     print("Winbond SRAM not found")
-#     sys.exit()
+slave.write([RAVENNA_PASSTHRU, CMD_RESET_CHIP])
+
+jedec = slave.exchange([RAVENNA_PASSTHRU, CMD_JEDEC_DATA], 3)
+print("JEDEC = {}".format(binascii.hexlify(jedec)))
+
+if jedec[0:1] != bytes.fromhex('ef'):
+    print("Winbond SRAM not found")
+    sys.exit()
 
 print("status = 0x{}".format(get_status(slave), '02x'))
 
 # print("Erasing chip...")
-# slave.write([CMD_WRITE_ENABLE])
-# slave.write([CMD_ERASE_CHIP])
+# slave.write([RAVENNA_PASSTHRU, CMD_WRITE_ENABLE])
+# slave.write([RAVENNA_PASSTHRU, CMD_ERASE_CHIP])
 #
 # while (is_busy(slave)):
 #     time.sleep(0.5)
 #
 # print("done")
 # print("status = 0x{}".format(get_status(slave), '02x'))
-#
+
 # buf = bytearray()
 # addr = 0
 # nbytes = 0
@@ -170,80 +176,80 @@ print("status = 0x{}".format(get_status(slave), '02x'))
 #
 # print("\ntotal_bytes = {}".format(total_bytes))
 #
-# print("************************************")
-# print("verifying...")
-# print("************************************")
-#
-# buf = bytearray()
-# addr = 0
-# nbytes = 0
-# total_bytes = 0
-#
-# while (is_busy(slave)):
-#     time.sleep(0.5)
-#
-# print("status = 0x{}".format(get_status(slave), '02x'))
-#
-# with open(file_path, mode='r') as f:
-#     x = f.readline()
-#     while x != '':
-#         if x[0] == '@':
-#             addr = int(x[1:], 16)
-#             print('setting address to {}'.format(addr, '02x'))
-#         else:
-#             # print(x)
-#             values = bytearray.fromhex(x[0:len(x)-1])
-#             buf[nbytes:nbytes] = values
-#             nbytes += len(values)
-#             # print(binascii.hexlify(values))
-#
-#         x = f.readline()
-#
-#         if nbytes >= 256:
-#             total_bytes += nbytes
-#             # print('\n----------------------\n')
-#             # print(binascii.hexlify(buf))
-#             # print("\ntotal_bytes = {}".format(total_bytes))
-#
-#             read_cmd = bytearray((CMD_READ_LO_SPEED,(addr >> 16) & 0xff, (addr >> 8) & 0xff, addr & 0xff))
-#             # print(binascii.hexlify(read_cmd))
-#             buf2 = slave.exchange(read_cmd, nbytes)
-#             if buf == buf2:
-#                 print("addr 0x{}: read compare successful".format(addr, '06x'))
-#             else:
-#                 print("addr 0x{}: *** read compare FAILED ***".format(addr, '06x'))
-#                 print(binascii.hexlify(buf))
-#                 print("<----->")
-#                 print(binascii.hexlify(buf2))
-#
-#             if nbytes > 256:
-#                 buf = buf[255:]
-#                 addr += 256
-#                 nbytes -= 256
-#                 print("*** over 256 hit")
-#             else:
-#                 buf = bytearray()
-#                 addr += 256
-#                 nbytes =0
-#
-#     if nbytes > 0:
-#         total_bytes += nbytes
-#         # print('\n----------------------\n')
-#         # print(binascii.hexlify(buf))
-#         # print("\nnbytes = {}".format(nbytes))
-#
-#         read_cmd = bytearray((CMD_READ_LO_SPEED, (addr >> 16) & 0xff, (addr >> 8) & 0xff, addr & 0xff))
-#         # print(binascii.hexlify(read_cmd))
-#         buf2 = slave.exchange(read_cmd, nbytes)
-#         if buf == buf2:
-#             print("addr 0x{}: read compare successful".format(addr, '06x'))
-#         else:
-#             print("addr 0x{}: *** read compare FAILED ***".format(addr, '06x'))
-#             print(binascii.hexlify(buf))
-#             print("<----->")
-#             print(binascii.hexlify(buf2))
-#
-# print("\ntotal_bytes = {}".format(total_bytes))
+print("************************************")
+print("verifying...")
+print("************************************")
+
+buf = bytearray()
+addr = 0
+nbytes = 0
+total_bytes = 0
+
+while (is_busy(slave)):
+    time.sleep(0.5)
+
+print("status = 0x{}".format(get_status(slave), '02x'))
+
+with open(file_path, mode='r') as f:
+    x = f.readline()
+    while x != '':
+        if x[0] == '@':
+            addr = int(x[1:], 16)
+            print('setting address to {}'.format(addr, '02x'))
+        else:
+            # print(x)
+            values = bytearray.fromhex(x[0:len(x)-1])
+            buf[nbytes:nbytes] = values
+            nbytes += len(values)
+            # print(binascii.hexlify(values))
+
+        x = f.readline()
+
+        if nbytes >= 256:
+            total_bytes += nbytes
+            # print('\n----------------------\n')
+            # print(binascii.hexlify(buf))
+            # print("\ntotal_bytes = {}".format(total_bytes))
+
+            read_cmd = bytearray((RAVENNA_PASSTHRU, CMD_READ_LO_SPEED,(addr >> 16) & 0xff, (addr >> 8) & 0xff, addr & 0xff))
+            # print(binascii.hexlify(read_cmd))
+            buf2 = slave.exchange(read_cmd, nbytes)
+            if buf == buf2:
+                print("addr 0x{}: read compare successful".format(addr, '06x'))
+            else:
+                print("addr 0x{}: *** read compare FAILED ***".format(addr, '06x'))
+                print(binascii.hexlify(buf))
+                print("<----->")
+                print(binascii.hexlify(buf2))
+
+            if nbytes > 256:
+                buf = buf[255:]
+                addr += 256
+                nbytes -= 256
+                print("*** over 256 hit")
+            else:
+                buf = bytearray()
+                addr += 256
+                nbytes =0
+
+    if nbytes > 0:
+        total_bytes += nbytes
+        # print('\n----------------------\n')
+        # print(binascii.hexlify(buf))
+        # print("\nnbytes = {}".format(nbytes))
+
+        read_cmd = bytearray((RAVENNA_PASSTHRU, CMD_READ_LO_SPEED, (addr >> 16) & 0xff, (addr >> 8) & 0xff, addr & 0xff))
+        # print(binascii.hexlify(read_cmd))
+        buf2 = slave.exchange(read_cmd, nbytes)
+        if buf == buf2:
+            print("addr 0x{}: read compare successful".format(addr, '06x'))
+        else:
+            print("addr 0x{}: *** read compare FAILED ***".format(addr, '06x'))
+            print(binascii.hexlify(buf))
+            print("<----->")
+            print(binascii.hexlify(buf2))
+
+print("\ntotal_bytes = {}".format(total_bytes))
 
 spi.terminate()
 
