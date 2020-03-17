@@ -64,6 +64,17 @@ def get_status(device):
     return int.from_bytes(device.exchange([RAVENNA_PASSTHRU, CMD_READ_STATUS],1), byteorder='big')
 
 
+def report_status(jedec):
+    if jedec[0] == int('bf', 16):
+        print("changing cmd values...")
+        print("status reg_1 = {}".format(hex(get_status(slave))))
+    else:
+        print("status reg_1 = {}".format(hex(get_status(slave))))
+        status = slave.exchange([RAVENNA_PASSTHRU, 0x35], 1)
+        print("status reg_2 = {}".format(hex(int.from_bytes(status, byteorder='big'))))
+        # print("status = {}".format(hex(from_bytes(slave.exchange([CMD_READ_STATUS], 2)[1], byteorder='big'))))
+
+
 def is_busy(device):
     return get_status(device) & SR_WIP
 
@@ -110,7 +121,7 @@ while (is_busy(slave)):
     time.sleep(0.5)
 
 print("done")
-print("status = 0x{}".format(get_status(slave), '02x'))
+print("status = {}".format(hex(get_status(slave))))
 
 buf = bytearray()
 addr = 0
@@ -147,7 +158,7 @@ with open(file_path, mode='r') as f:
             while (is_busy(slave)):
                 time.sleep(0.1)
 
-            print("addr 0x{}: flash page write successful".format(addr,'06x'))
+            print("addr {}: flash page write successful".format(hex(addr)))
 
             if nbytes > 256:
                 buf = buf[255:]
@@ -172,9 +183,18 @@ with open(file_path, mode='r') as f:
         while (is_busy(slave)):
             time.sleep(0.1)
 
-        print("addr 0x{}: flash page write successful".format(addr, '06x'))
+        print("addr {}: flash page write successful".format(hex(addr)))
 
 print("\ntotal_bytes = {}".format(total_bytes))
+
+if jedec[0] != int('bf', 16):
+    print("locking registers...")
+    slave.write([RAVENNA_PASSTHRU, 0xaa])
+    slave.write([RAVENNA_PASSTHRU, 0x55])
+    slave.write([RAVENNA_PASSTHRU, 0x06])
+    slave.write([RAVENNA_PASSTHRU, 0x31, 0x01])
+
+report_status(jedec)
 
 print("************************************")
 print("verifying...")
@@ -188,14 +208,14 @@ total_bytes = 0
 while (is_busy(slave)):
     time.sleep(0.5)
 
-print("status = 0x{}".format(get_status(slave), '02x'))
+report_status(jedec)
 
 with open(file_path, mode='r') as f:
     x = f.readline()
     while x != '':
         if x[0] == '@':
-            addr = int(x[1:], 16)
-            print('setting address to {}'.format(addr, '02x'))
+            addr = int(x[1:],16)
+            print('setting address to {}'.format(hex(addr)))
         else:
             # print(x)
             values = bytearray.fromhex(x[0:len(x)-1])
@@ -215,9 +235,9 @@ with open(file_path, mode='r') as f:
             # print(binascii.hexlify(read_cmd))
             buf2 = slave.exchange(read_cmd, nbytes)
             if buf == buf2:
-                print("addr 0x{}: read compare successful".format(addr, '06x'))
+                print("addr {}: read compare successful".format(hex(addr)))
             else:
-                print("addr 0x{}: *** read compare FAILED ***".format(addr, '06x'))
+                print("addr {}: *** read compare FAILED ***".format(hex(addr)))
                 print(binascii.hexlify(buf))
                 print("<----->")
                 print(binascii.hexlify(buf2))
@@ -242,9 +262,9 @@ with open(file_path, mode='r') as f:
         # print(binascii.hexlify(read_cmd))
         buf2 = slave.exchange(read_cmd, nbytes)
         if buf == buf2:
-            print("addr 0x{}: read compare successful".format(addr, '06x'))
+            print("addr {}: read compare successful".format(hex(addr)))
         else:
-            print("addr 0x{}: *** read compare FAILED ***".format(addr, '06x'))
+            print("addr {}: *** read compare FAILED ***".format(hex(addr)))
             print(binascii.hexlify(buf))
             print("<----->")
             print(binascii.hexlify(buf2))
