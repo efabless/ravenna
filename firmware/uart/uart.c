@@ -232,7 +232,8 @@ void main()
 	// Set UART clock to 9600 baud
 //	reg_uart_clkdiv = 6667;   // for 8MHz osc
 //	reg_uart_clkdiv = 6600;
-	reg_uart_clkdiv = 4167;   // for 5MHz osc
+	reg_uart_clkdiv = 5000;   // for 6MHz osc
+//	reg_uart_clkdiv = 4167;   // for 5MHz osc
 
 	reg_gpio_enb = 0x0000;
 	reg_gpio_data = 0x0001;

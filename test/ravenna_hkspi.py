@@ -133,7 +133,7 @@ with open(file_path, mode='r') as f:
     while x != '':
         if x[0] == '@':
             addr = int(x[1:],16)
-            print('setting address to {}'.format(addr, '02x'))
+            print('setting address to {}'.format(hex(addr)))
         else:
             # print(x)
             values = bytearray.fromhex(x[0:len(x)-1])
