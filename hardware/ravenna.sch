@@ -100,19 +100,11 @@ GND
 Wire Wire Line
 	14550 7350 14550 7250
 Wire Wire Line
-	14550 7250 14750 7250
-Text Label 14550 7350 0    10   ~ 0
-GND
-Wire Wire Line
 	15150 8250 15750 8250
 Wire Wire Line
 	15750 8250 15750 8550
-Text Label 15150 8250 0    10   ~ 0
-GND
 Wire Wire Line
 	18100 7100 18100 7000
-Text Label 18100 7100 0    10   ~ 0
-GND
 Wire Wire Line
 	7650 10850 7350 10850
 Text Label 7350 10850 0    70   ~ 0
@@ -120,10 +112,6 @@ GND
 Wire Wire Line
 	8250 10850 8550 10850
 Text Label 8450 10850 0    70   ~ 0
-GND
-Wire Wire Line
-	22500 4500 22000 4500
-Text Label 22000 4500 0    70   ~ 0
 GND
 Wire Wire Line
 	10450 11450 10450 11350
@@ -147,16 +135,8 @@ Text Label 3300 9100 0    10   ~ 0
 GND
 Wire Wire Line
 	15350 6150 15350 6050
-Text Label 15350 6150 0    10   ~ 0
-GND
 Wire Wire Line
 	16350 6150 16350 6050
-Text Label 16350 6150 0    10   ~ 0
-GND
-Wire Wire Line
-	16350 7350 16350 7250
-Text Label 16350 7350 0    10   ~ 0
-GND
 Wire Wire Line
 	5200 3700 5400 3700
 Text Label 5200 3700 0    10   ~ 0
@@ -180,8 +160,6 @@ Text Label 13000 1900 0    10   ~ 0
 GND
 Wire Wire Line
 	14350 6150 14350 6050
-Text Label 14350 6150 0    10   ~ 0
-GND
 Wire Wire Line
 	24350 7600 23250 7600
 Text Label 24350 7600 0    10   ~ 0
@@ -225,33 +203,13 @@ Wire Wire Line
 	2800 5800 2800 5600
 Connection ~ 2800 5800
 Wire Wire Line
-	5200 4300 4700 4300
-Text Label 5200 4300 0    10   ~ 0
-+5V
-Wire Wire Line
 	14050 7650 13950 7650
-Text Label 14050 7650 0    10   ~ 0
-+5V
-Wire Wire Line
-	15950 6950 16050 6950
-Wire Wire Line
-	16050 6950 16050 6650
-Wire Wire Line
-	16350 6950 16050 6950
-Connection ~ 16050 6950
-Text Label 15950 6950 0    10   ~ 0
-+5V
-Wire Wire Line
-	14950 5650 14650 5650
 Wire Wire Line
 	14650 5650 14650 5450
 Wire Wire Line
 	14350 5750 14350 5650
 Wire Wire Line
 	14350 5650 14650 5650
-Connection ~ 14650 5650
-Text Label 14950 5650 0    10   ~ 0
-+5V
 Wire Wire Line
 	6000 3900 6000 3700
 Wire Wire Line
@@ -285,8 +243,6 @@ Text Label 6000 3900 0    10   ~ 0
 +3V3
 Wire Wire Line
 	5200 4700 4700 4700
-Text Label 5200 4700 0    10   ~ 0
-+3V3
 Text Label 3300 8200 0    10   ~ 0
 +3V3
 Wire Wire Line
@@ -308,14 +264,10 @@ Wire Wire Line
 	5200 5100 4700 5100
 Wire Wire Line
 	5200 6100 4000 6100
-Wire Wire Line
-	8800 4600 9300 4600
 Text Label 9300 4600 0    70   ~ 0
 HK_CSB
 Text Label 21950 9900 1    70   ~ 0
 RAPTOR_CS
-Wire Wire Line
-	8800 4500 9300 4500
 Text Label 9300 4500 0    70   ~ 0
 HK_SDO
 Text Label 22150 9900 1    70   ~ 0
@@ -324,8 +276,6 @@ Text Label 13600 2400 0    70   ~ 0
 RAPTOR_SCK
 Text Label 21850 9900 1    70   ~ 0
 RAPTOR_SCK
-Wire Wire Line
-	8800 4300 9300 4300
 Text Label 9300 4300 0    70   ~ 0
 TXD_HK_SCK
 Text Label 13600 2500 0    70   ~ 0
@@ -334,9 +284,6 @@ Text Label 22050 9900 1    70   ~ 0
 RAPTOR_D0
 Wire Wire Line
 	14750 7650 14750 8250
-Wire Wire Line
-	14750 7650 14450 7650
-Connection ~ 14750 7650
 Wire Wire Line
 	14750 6850 14750 5750
 Wire Wire Line
@@ -350,19 +297,11 @@ Wire Wire Line
 Text Label 8450 10950 0    70   ~ 0
 VDD(3.3)
 Wire Wire Line
-	21400 2600 20900 2600
-Text Label 20900 2600 0    70   ~ 0
-VDD(3.3)
-Wire Wire Line
 	15950 5650 15950 5550
 Wire Wire Line
 	16350 5750 16350 5650
-Text Label 15750 5650 0    10   ~ 0
-VDD(3.3)
 Wire Wire Line
 	18100 5900 18100 6200
-Text Label 18100 5900 0    10   ~ 0
-VDD(3.3)
 Wire Wire Line
 	22650 6100 22650 6200
 Wire Wire Line
@@ -396,10 +335,6 @@ Wire Wire Line
 Text Label 8450 10450 0    70   ~ 0
 P0
 Wire Wire Line
-	22500 2700 22000 2700
-Text Label 22000 2700 0    70   ~ 0
-P0
-Wire Wire Line
 	12050 10550 12050 10350
 Text Label 12050 10350 0    70   ~ 0
 P0
@@ -410,19 +345,11 @@ Wire Wire Line
 Text Label 8450 10550 0    70   ~ 0
 P1
 Wire Wire Line
-	22500 2800 22000 2800
-Text Label 22000 2800 0    70   ~ 0
-P1
-Wire Wire Line
 	11550 10550 11550 10350
 Text Label 11550 10350 0    70   ~ 0
 P1
 Text Label 22350 6800 1    70   ~ 0
 P1
-Wire Wire Line
-	22500 2900 22000 2900
-Text Label 22000 2900 0    70   ~ 0
-P2
 Wire Wire Line
 	11050 10550 11050 10350
 Text Label 11050 10350 0    70   ~ 0
@@ -430,43 +357,19 @@ P2
 Text Label 22250 6800 1    70   ~ 0
 P2
 Wire Wire Line
-	22500 3000 22000 3000
-Text Label 22000 3000 0    70   ~ 0
-P3
-Wire Wire Line
 	10450 10550 10450 10350
 Text Label 10450 10350 0    70   ~ 0
 P3
 Text Label 22150 6800 1    70   ~ 0
 P3
-Wire Wire Line
-	22500 3100 22000 3100
-Text Label 22000 3100 0    70   ~ 0
-P4
 Text Label 22050 6800 1    70   ~ 0
 P4
-Wire Wire Line
-	22500 3200 22000 3200
-Text Label 22000 3200 0    70   ~ 0
-P5
 Text Label 21950 6800 1    70   ~ 0
 P5
-Wire Wire Line
-	22500 3300 22000 3300
-Text Label 22000 3300 0    70   ~ 0
-P6
 Text Label 21850 6800 1    70   ~ 0
 P6
-Wire Wire Line
-	22500 3400 22000 3400
-Text Label 22000 3400 0    70   ~ 0
-P7
 Text Label 21750 6800 1    70   ~ 0
 P7
-Wire Wire Line
-	22500 4100 22000 4100
-Text Label 22000 4100 0    70   ~ 0
-SPI_SDI
 Wire Wire Line
 	23250 7700 23750 7700
 Text Label 23350 7700 0    70   ~ 0
@@ -476,10 +379,6 @@ Wire Wire Line
 Text Label 7350 10650 0    70   ~ 0
 SPI_SDI
 Wire Wire Line
-	22500 4200 22000 4200
-Text Label 22000 4200 0    70   ~ 0
-SPI_SDO
-Wire Wire Line
 	23250 8100 23750 8100
 Text Label 23350 8100 0    70   ~ 0
 SPI_SDO
@@ -488,125 +387,57 @@ Wire Wire Line
 Text Label 7350 10550 0    70   ~ 0
 SPI_SDO
 Wire Wire Line
-	21400 4100 20900 4100
-Text Label 20900 4100 0    70   ~ 0
-AOUT
-Wire Wire Line
 	20750 8200 20150 8200
 Text Label 20150 8200 0    70   ~ 0
 AOUT
-Wire Wire Line
-	21400 3100 20900 3100
-Text Label 20900 3100 0    70   ~ 0
-P12
 Wire Wire Line
 	20750 7600 20150 7600
 Text Label 20150 7600 0    70   ~ 0
 P12
 Wire Wire Line
-	21400 3200 20900 3200
-Text Label 20900 3200 0    70   ~ 0
-P13
-Wire Wire Line
 	20750 7700 20150 7700
 Text Label 20150 7700 0    70   ~ 0
 P13
-Wire Wire Line
-	21400 3300 20900 3300
-Text Label 20900 3300 0    70   ~ 0
-P14
 Wire Wire Line
 	20750 7800 20150 7800
 Text Label 20150 7800 0    70   ~ 0
 P14
 Wire Wire Line
-	21400 3400 20900 3400
-Text Label 20900 3400 0    70   ~ 0
-P15
-Wire Wire Line
 	20750 7900 20150 7900
 Text Label 20150 7900 0    70   ~ 0
 P15
-Wire Wire Line
-	21400 3900 20900 3900
-Text Label 20900 3900 0    70   ~ 0
-VREF+
 Wire Wire Line
 	20750 8300 20150 8300
 Text Label 20150 8300 0    70   ~ 0
 VREF+
 Wire Wire Line
-	21400 4000 20900 4000
-Text Label 20900 4000 0    70   ~ 0
-VREF-
-Wire Wire Line
 	20750 8400 20150 8400
 Text Label 20150 8400 0    70   ~ 0
 VREF-
-Wire Wire Line
-	21400 2700 20900 2700
-Text Label 20900 2700 0    70   ~ 0
-P8
 Text Label 21650 6800 1    70   ~ 0
 P8
-Wire Wire Line
-	21400 2800 20900 2800
-Text Label 20900 2800 0    70   ~ 0
-P9
 Text Label 21550 6800 1    70   ~ 0
 P9
-Wire Wire Line
-	21400 2900 20900 2900
-Text Label 20900 2900 0    70   ~ 0
-P10
 Text Label 21450 6800 1    70   ~ 0
 P10
-Wire Wire Line
-	21400 3000 20900 3000
-Text Label 20900 3000 0    70   ~ 0
-P11
 Text Label 21350 6800 1    70   ~ 0
 P11
-Wire Wire Line
-	21400 3500 20900 3500
-Text Label 20900 3500 2    70   ~ 0
-HK_CSB
 Text Label 21450 9750 3    70   ~ 0
 HK_CSB
-Wire Wire Line
-	21400 3600 20900 3600
-Text Label 20900 3600 2    70   ~ 0
-TXD_HK_SCK
 Wire Wire Line
 	21350 9400 21350 9550
 Text Label 21550 9500 3    70   ~ 0
 TXD_HK_SCK
 Wire Wire Line
-	21400 3700 20900 3700
-Text Label 20900 3700 2    70   ~ 0
-RXD_HK_SDI
-Wire Wire Line
 	21550 9400 21550 9500
 Text Label 21350 9550 3    70   ~ 0
 RXD_HK_SDI
-Wire Wire Line
-	21400 3800 20900 3800
-Text Label 20900 3800 2    70   ~ 0
-HK_SDO
 Text Label 21250 9750 3    70   ~ 0
 HK_SDO
-Wire Wire Line
-	21400 4300 20900 4300
-Text Label 20900 4300 0    70   ~ 0
-ANA_1
 Wire Wire Line
 	20750 8500 20150 8500
 Text Label 20150 8500 0    70   ~ 0
 ANA_1
-Wire Wire Line
-	21400 4200 20900 4200
-Text Label 20900 4200 0    70   ~ 0
-ANA_0
 Wire Wire Line
 	20750 8600 20150 8600
 Text Label 20150 8600 0    70   ~ 0
@@ -616,25 +447,11 @@ Wire Wire Line
 Text Label 23550 8200 0    70   ~ 0
 RX0
 Wire Wire Line
-	22500 4400 22000 4400
-Text Label 22000 4400 0    70   ~ 0
-RX0
-Wire Wire Line
-	22500 4300 22000 4300
-Text Label 22000 4300 0    70   ~ 0
-TX0
-Wire Wire Line
 	23250 8300 23750 8300
 Text Label 23550 8300 0    70   ~ 0
 TX0
-Wire Wire Line
-	8800 4400 9300 4400
 Text Label 9300 4400 0    70   ~ 0
 RXD_HK_SDI
-Wire Wire Line
-	22500 3900 22000 3900
-Text Label 22000 3900 0    70   ~ 0
-SPI_CSB
 Wire Wire Line
 	23250 7900 23750 7900
 Text Label 23350 7900 0    70   ~ 0
@@ -700,29 +517,13 @@ Connection ~ 23350 8900
 Text Label 23550 8900 0    70   ~ 0
 IRQ
 Wire Wire Line
-	22500 3500 22000 3500
-Text Label 22000 3500 0    70   ~ 0
-IRQ
-Wire Wire Line
 	23250 8400 24350 8400
 Wire Wire Line
 	20750 8700 20150 8700
 Text Label 20150 8700 0    70   ~ 0
 NVREF
-Wire Wire Line
-	22500 3600 22000 3600
-Text Label 22000 3600 0    70   ~ 0
-NVREF
 Text Label 22550 9900 1    70   ~ 0
 XCLK
-Wire Wire Line
-	22500 2600 22000 2600
-Text Label 22000 2600 0    70   ~ 0
-XCLK
-Wire Wire Line
-	22500 4000 22000 4000
-Text Label 22000 4000 0    70   ~ 0
-SPI_SCK
 Wire Wire Line
 	23250 8000 23750 8000
 Text Label 23350 8000 0    70   ~ 0
@@ -732,10 +533,6 @@ Wire Wire Line
 Text Label 7350 10750 0    70   ~ 0
 SPI_SCK
 Wire Wire Line
-	22500 3700 22000 3700
-Text Label 22000 3700 0    70   ~ 0
-I2C_SDA
-Wire Wire Line
 	23250 8700 23750 8700
 Text Label 23350 8700 0    70   ~ 0
 I2C_SDA
@@ -743,10 +540,6 @@ Wire Wire Line
 	8250 10750 8550 10750
 Text Label 8450 10750 0    70   ~ 0
 I2C_SDA
-Wire Wire Line
-	22500 3800 22000 3800
-Text Label 22000 3800 0    70   ~ 0
-I2C_SCL
 Wire Wire Line
 	23250 8600 23750 8600
 Text Label 23350 8600 0    70   ~ 0
@@ -760,16 +553,8 @@ Wire Wire Line
 Text Label 20150 8000 0    70   ~ 0
 COMP_INP
 Wire Wire Line
-	21400 4400 20900 4400
-Text Label 20900 4400 0    70   ~ 0
-COMP_INP
-Wire Wire Line
 	20750 8100 20150 8100
 Text Label 20150 8100 0    70   ~ 0
-COMP_INN
-Wire Wire Line
-	21400 4500 20900 4500
-Text Label 20900 4500 0    70   ~ 0
 COMP_INN
 $Comp
 L ravenna-eagle-import:GND #SUPPLY02
@@ -783,10 +568,10 @@ F 3 "" H 7550 3450 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L ravenna-eagle-import:0.27OHM-0603-1_10W-1% FUSE_0
+L ravenna-eagle-import:0.27OHM-0603-1_10W-1% FUSE0
 U 1 1 5E742167
 P 3200 6300
-F 0 "FUSE_0" H 3200 6360 70  0000 C BNN
+F 0 "FUSE0" H 3200 6360 70  0000 C BNN
 F 1 "PGB10100603" H 3200 6240 70  0000 C TNN
 F 2 "ravenna:0603" H 3200 6300 50  0001 C CNN
 F 3 "" H 3200 6300 50  0001 C CNN
@@ -928,12 +713,12 @@ $EndComp
 $Comp
 L ravenna-eagle-import:+5V #P+06
 U 1 1 5E74215B
-P 16050 6550
-F 0 "#P+06" H 16050 6550 50  0001 C CNN
-F 1 "+5V" V 15950 6350 59  0000 L BNN
-F 2 "" H 16050 6550 50  0001 C CNN
-F 3 "" H 16050 6550 50  0001 C CNN
-	1    16050 6550
+P 16050 6500
+F 0 "#P+06" H 16050 6500 50  0001 C CNN
+F 1 "+5V" V 15950 6300 59  0000 L BNN
+F 2 "" H 16050 6500 50  0001 C CNN
+F 3 "" H 16050 6500 50  0001 C CNN
+	1    16050 6500
 	1    0    0    -1  
 $EndComp
 $Comp
@@ -990,28 +775,6 @@ F 2 "Connector_PinHeader_2.54mm:PinHeader_2x06_P2.54mm_Vertical" H 7850 10950 50
 F 3 "" H 7850 10950 50  0001 C CNN
 	1    7850 10950
 	1    0    0    -1  
-$EndComp
-$Comp
-L ravenna-eagle-import:CONN_20 J5
-U 1 1 54BD1E4C
-P 22900 2400
-F 0 "J5" H 22900 4620 70  0000 L BNN
-F 1 "CONN_20" H 22900 2410 70  0000 L BNN
-F 2 "Connector_PinHeader_2.54mm:PinHeader_1x20_P2.54mm_Vertical" H 22900 2400 50  0001 C CNN
-F 3 "" H 22900 2400 50  0001 C CNN
-	1    22900 2400
-	-1   0    0    1   
-$EndComp
-$Comp
-L ravenna-eagle-import:CONN_20 J4
-U 1 1 F512900F
-P 21800 2400
-F 0 "J4" H 21800 4620 70  0000 L BNN
-F 1 "CONN_20" H 21800 2410 70  0000 L BNN
-F 2 "Connector_PinHeader_2.54mm:PinHeader_1x20_P2.54mm_Vertical" H 21800 2400 50  0001 C CNN
-F 3 "" H 21800 2400 50  0001 C CNN
-	1    21800 2400
-	-1   0    0    1   
 $EndComp
 $Comp
 L ravenna-eagle-import:GND #SUPPLY020
@@ -1346,12 +1109,12 @@ $EndComp
 $Comp
 L ravenna-eagle-import:GND #SUPPLY016
 U 1 1 5E74216A
-P 16350 7450
-F 0 "#SUPPLY016" H 16350 7450 50  0001 C CNN
-F 1 "GND" H 16275 7325 59  0000 L BNN
-F 2 "" H 16350 7450 50  0001 C CNN
-F 3 "" H 16350 7450 50  0001 C CNN
-	1    16350 7450
+P 16350 7500
+F 0 "#SUPPLY016" H 16350 7500 50  0001 C CNN
+F 1 "GND" H 16275 7375 59  0000 L BNN
+F 2 "" H 16350 7500 50  0001 C CNN
+F 3 "" H 16350 7500 50  0001 C CNN
+	1    16350 7500
 	1    0    0    -1  
 $EndComp
 $Comp
@@ -1772,8 +1535,6 @@ F 3 "" H 1700 6000 50  0001 C CNN
 	1    1700 6000
 	1    0    0    -1  
 $EndComp
-Wire Wire Line
-	15750 5650 15950 5650
 $Comp
 L 629105150521:629105150521 J1
 U 1 1 5E73D4D2
@@ -2091,11 +1852,8 @@ Wire Wire Line
 Wire Wire Line
 	2300 8800 2300 8600
 Connection ~ 2300 8600
-Connection ~ 15950 5650
 Wire Wire Line
 	15950 5650 16350 5650
-Wire Wire Line
-	8800 6300 9250 6300
 Wire Wire Line
 	9250 6300 9250 6500
 $Comp
@@ -2109,8 +1867,6 @@ F 3 "" H 7000 5700 50  0001 C CNN
 	1    7000 5700
 	1    0    0    -1  
 $EndComp
-Wire Wire Line
-	8800 6200 9700 6200
 Wire Wire Line
 	9700 6200 9700 6500
 Wire Wire Line
@@ -2379,62 +2135,242 @@ Wire Wire Line
 	18700 2100 18400 2100
 Wire Wire Line
 	18400 2100 18400 2000
-Wire Wire Line
-	8800 5400 9500 5400
 Text Label 9100 5400 0    50   ~ 0
 TMUX_SEL
-Wire Wire Line
-	8800 5500 9500 5500
 Text Label 9200 5500 0    50   ~ 0
 TXD_EN
-$Comp
-L ravenna-eagle-import:VDD #SUPPLY?
-U 1 1 5E74B34A
-P 21000 1400
-AR Path="/5E741B44/5E74B34A" Ref="#SUPPLY?"  Part="1" 
-AR Path="/5E74B34A" Ref="#SUPPLY0112"  Part="1" 
-F 0 "#SUPPLY0112" H 21000 1400 50  0001 C CNN
-F 1 "VDD" H 20925 1525 59  0000 L BNN
-F 2 "" H 21000 1400 50  0001 C CNN
-F 3 "" H 21000 1400 50  0001 C CNN
-	1    21000 1400
-	1    0    0    -1  
-$EndComp
-$Comp
-L power:PWR_FLAG #FLG0101
-U 1 1 5E74B49D
-P 21250 1500
-F 0 "#FLG0101" H 21250 1575 50  0001 C CNN
-F 1 "PWR_FLAG" H 21250 1674 50  0000 C CNN
-F 2 "" H 21250 1500 50  0001 C CNN
-F 3 "~" H 21250 1500 50  0001 C CNN
-	1    21250 1500
-	1    0    0    -1  
-$EndComp
+NoConn ~ 15950 7550
+NoConn ~ 15750 5750
+NoConn ~ 8800 6100
+NoConn ~ 8800 6000
+NoConn ~ 8800 5900
+NoConn ~ 8800 5800
+NoConn ~ 8800 5700
+NoConn ~ 8800 5600
+NoConn ~ 8800 5000
+NoConn ~ 8800 4900
+NoConn ~ 8800 4800
+NoConn ~ 8800 4700
+NoConn ~ 1350 5800
 Wire Wire Line
-	21000 1500 21250 1500
-$Comp
-L ravenna-eagle-import:GND #SUPPLY0113
-U 1 1 5E765DCD
-P 22000 1600
-F 0 "#SUPPLY0113" H 22000 1600 50  0001 C CNN
-F 1 "GND" H 21925 1475 59  0000 L BNN
-F 2 "" H 22000 1600 50  0001 C CNN
-F 3 "" H 22000 1600 50  0001 C CNN
-	1    22000 1600
-	1    0    0    -1  
-$EndComp
-$Comp
-L power:PWR_FLAG #FLG0102
-U 1 1 5E765ED0
-P 21700 1500
-F 0 "#FLG0102" H 21700 1575 50  0001 C CNN
-F 1 "PWR_FLAG" H 21700 1674 50  0000 C CNN
-F 2 "" H 21700 1500 50  0001 C CNN
-F 3 "~" H 21700 1500 50  0001 C CNN
-	1    21700 1500
-	1    0    0    -1  
-$EndComp
+	14650 5650 14950 5650
+Connection ~ 14650 5650
 Wire Wire Line
-	21700 1500 22000 1500
+	15750 5650 15950 5650
+Connection ~ 15950 5650
+Wire Wire Line
+	16350 7250 16350 7400
+Connection ~ 14750 7650
+Wire Wire Line
+	16050 6600 16050 6950
+Wire Wire Line
+	16050 6950 15950 6950
+Wire Wire Line
+	14450 7650 14750 7650
+Wire Wire Line
+	14550 7250 14750 7250
+Wire Wire Line
+	16050 6950 16350 6950
+Connection ~ 16050 6950
+Wire Wire Line
+	8800 4600 9300 4600
+Wire Wire Line
+	8800 4500 9300 4500
+Wire Wire Line
+	8800 4300 9300 4300
+Wire Wire Line
+	8800 4400 9300 4400
+Wire Wire Line
+	8800 6300 9250 6300
+Wire Wire Line
+	8800 6200 9700 6200
+Wire Wire Line
+	8800 5400 9500 5400
+Wire Wire Line
+	8800 5500 9500 5500
+Wire Wire Line
+	5200 4300 4700 4300
+Wire Wire Line
+	23250 4800 22750 4800
+Text Label 22750 4800 0    70   ~ 0
+GND
+Wire Wire Line
+	22000 2900 21750 2900
+Text Label 21750 2900 2    70   ~ 0
+VDD(3.3)
+Wire Wire Line
+	23250 3000 22750 3000
+Text Label 22750 3000 0    70   ~ 0
+ANA_0
+Wire Wire Line
+	23250 3100 22750 3100
+Text Label 22750 3100 0    70   ~ 0
+ANA_1
+Wire Wire Line
+	23250 3200 22750 3200
+Text Label 22750 3200 0    70   ~ 0
+VREF-
+Wire Wire Line
+	23250 3300 22750 3300
+Text Label 22750 3300 0    70   ~ 0
+VREF+
+Wire Wire Line
+	23250 3400 22750 3400
+Text Label 22750 3400 0    70   ~ 0
+AOUT
+Wire Wire Line
+	23250 3500 22750 3500
+Text Label 22750 3500 0    70   ~ 0
+COMP_INN
+Wire Wire Line
+	23250 3600 22750 3600
+Text Label 22750 3600 0    70   ~ 0
+COMP_INP
+Wire Wire Line
+	23250 3700 22750 3700
+Text Label 22750 3700 0    70   ~ 0
+P15
+Wire Wire Line
+	23250 4400 22750 4400
+Text Label 22750 4400 0    70   ~ 0
+P8
+Wire Wire Line
+	23250 4500 22750 4500
+Text Label 22750 4500 0    70   ~ 0
+P7
+Wire Wire Line
+	22000 4400 21750 4400
+Text Label 21750 4400 2    70   ~ 0
+P0
+Wire Wire Line
+	22000 3400 21750 3400
+Text Label 21750 3400 2    70   ~ 0
+XCLK
+Wire Wire Line
+	22000 3500 21750 3500
+Text Label 21750 3500 2    70   ~ 0
+IRQ
+Wire Wire Line
+	22000 3600 21750 3600
+Text Label 21750 3600 2    70   ~ 0
+I2C_SDA
+Wire Wire Line
+	22000 3700 21750 3700
+Text Label 21750 3700 2    70   ~ 0
+I2C_SCL
+Wire Wire Line
+	22000 4200 21750 4200
+Text Label 21750 4200 2    70   ~ 0
+SPI_SDI
+Wire Wire Line
+	22000 4300 21750 4300
+Text Label 21750 4300 2    70   ~ 0
+SPI_SDO
+Wire Wire Line
+	22000 3000 21750 3000
+Text Label 21750 3000 2    70   ~ 0
+HK_CSB
+Wire Wire Line
+	22000 3100 21750 3100
+Text Label 21750 3100 2    70   ~ 0
+TXD_HK_SCK
+Wire Wire Line
+	22000 3200 21750 3200
+Text Label 21750 3200 2    70   ~ 0
+RXD_HK_SDI
+Wire Wire Line
+	22000 3300 21750 3300
+Text Label 21750 3300 2    70   ~ 0
+HK_SDO
+Wire Wire Line
+	22000 3800 21750 3800
+Text Label 21750 3800 2    70   ~ 0
+TX0
+Wire Wire Line
+	22000 3900 21750 3900
+Text Label 21750 3900 2    70   ~ 0
+RX0
+Wire Wire Line
+	22000 4000 21750 4000
+Text Label 21750 4000 2    70   ~ 0
+SPI_CSB
+Wire Wire Line
+	22000 4100 21750 4100
+Text Label 21750 4100 2    70   ~ 0
+SPI_SCK
+Wire Wire Line
+	22000 4600 21750 4600
+Text Label 21750 4600 2    70   ~ 0
+P2
+Wire Wire Line
+	22000 4500 21750 4500
+Text Label 21750 4500 2    70   ~ 0
+P1
+Wire Wire Line
+	23250 4700 22750 4700
+Text Label 22750 4700 0    70   ~ 0
+P5
+Wire Wire Line
+	23250 4600 22750 4600
+Text Label 22750 4600 0    70   ~ 0
+P6
+Wire Wire Line
+	23250 4200 22750 4200
+Text Label 22750 4200 0    70   ~ 0
+P10
+Wire Wire Line
+	23250 3800 22750 3800
+Text Label 22750 3800 0    70   ~ 0
+P14
+Wire Wire Line
+	23250 3900 22750 3900
+Text Label 22750 3900 0    70   ~ 0
+P13
+Wire Wire Line
+	23250 2900 22750 2900
+Text Label 22750 2900 0    70   ~ 0
+NVREF
+Wire Wire Line
+	23250 4300 22750 4300
+Text Label 22750 4300 0    70   ~ 0
+P9
+Wire Wire Line
+	23250 4000 22750 4000
+Text Label 22750 4000 0    70   ~ 0
+P12
+Wire Wire Line
+	23250 4100 22750 4100
+Text Label 22750 4100 0    70   ~ 0
+P11
+Wire Wire Line
+	22000 4700 21750 4700
+Text Label 21750 4700 2    70   ~ 0
+P3
+Wire Wire Line
+	22000 4800 21750 4800
+Text Label 21750 4800 2    70   ~ 0
+P4
+$Comp
+L ravenna-eagle-import:CONN_20 J5
+U 1 1 5EC13E65
+P 23650 2700
+F 0 "J5" H 23650 4920 70  0000 L BNN
+F 1 "CONN_20" H 23650 2710 70  0000 L BNN
+F 2 "Connector_PinHeader_2.54mm:PinHeader_1x20_P2.54mm_Vertical" H 23650 2700 50  0001 C CNN
+F 3 "" H 23650 2700 50  0001 C CNN
+	1    23650 2700
+	-1   0    0    1   
+$EndComp
+$Comp
+L ravenna-eagle-import:CONN_20 J4
+U 1 1 5EC13E6C
+P 22400 2700
+F 0 "J4" H 22400 4920 70  0000 L BNN
+F 1 "CONN_20" H 22400 2710 70  0000 L BNN
+F 2 "Connector_PinHeader_2.54mm:PinHeader_1x20_P2.54mm_Vertical" H 22400 2700 50  0001 C CNN
+F 3 "" H 22400 2700 50  0001 C CNN
+	1    22400 2700
+	-1   0    0    1   
+$EndComp
+NoConn ~ 1250 5300
 $EndSCHEMATC
