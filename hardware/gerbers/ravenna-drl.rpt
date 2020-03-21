@@ -1,0 +1,29 @@
+Drill report for /Users/jeffdi/Projects/ravenna/hardware/ravenna.kicad_pcb
+Created on Saturday, March 21, 2020 at 01:28:14 PM
+
+Copper Layer Stackup:
+    =============================================================
+    L1 :  Top                       front
+    L2 :  Route2                    in1
+    L3 :  Route15                   in2
+    L4 :  Bottom                    back
+
+
+Drill file 'ravenna.drl' contains
+    plated through holes:
+    =============================================================
+    T1  0.35mm  0.014"  (12 holes)
+    T2  0.40mm  0.016"  (54 holes)
+    T3  0.55mm  0.022"  (2 holes)  (with 2 slots)
+    T4  0.85mm  0.033"  (2 holes)  (with 2 slots)
+    T5  1.00mm  0.039"  (54 holes)
+
+    Total plated holes count 124
+
+
+Not plated through holes are merged with plated holes
+    unplated through holes:
+    =============================================================
+    T6  0.80mm  0.031"  (2 holes)
+
+    Total unplated holes count 2
