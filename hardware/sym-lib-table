@@ -7,4 +7,5 @@
   (lib (name ravenna_qfn56)(type Legacy)(uri "${KIPRJMOD}/parts and footprints/ravenna qfn56.lib")(options "")(descr ""))
   (lib (name cstne12m0gh5l000r0-samacsys_parts)(type Legacy)(uri "${KIPRJMOD}/parts and footprints/cstne12m0gh5l000r0-samacsys_parts.lib")(options "")(descr ""))
   (lib (name sn74lvc1g125dckr-sn74lvc1g125dckr)(type Legacy)(uri "${KIPRJMOD}/parts and footprints/sn74lvc1g125dckr-sn74lvc1g125dckr.lib")(options "")(descr ""))
+  (lib (name momentary-switch-spst-smd-4.6x2.8mm)(type Legacy)(uri "/Users/jeffdi/Projects/ravenna/hardware/parts and footprints/momentary-switch-spst-smd-4.6x2.8mm.lib")(options "")(descr ""))
 )
