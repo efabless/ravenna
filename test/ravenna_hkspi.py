@@ -276,12 +276,11 @@ print("\ntotal_bytes = {}".format(total_bytes))
 pll_trim = slave.exchange([RAVENNA_STREAM_READ, 0x04],1)
 print("pll_trim = {}\n".format(binascii.hexlify(pll_trim)))
 
-print("Setting trim values...\n")
+# print("Setting trim values...\n")
+# slave.write([RAVENNA_STREAM_WRITE, 0x04, 0x7f])
 
-slave.write([RAVENNA_STREAM_WRITE, 0x04, 0x7f])
-
-pll_trim = slave.exchange([RAVENNA_STREAM_READ, 0x04],1)
-print("pll_trim = {}\n".format(binascii.hexlify(pll_trim)))
+# pll_trim = slave.exchange([RAVENNA_STREAM_READ, 0x04],1)
+# print("pll_trim = {}\n".format(binascii.hexlify(pll_trim)))
 
 spi.terminate()
 
