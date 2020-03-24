@@ -253,7 +253,8 @@ void main()
     print("Starting...\n");
 
     print("PLL trim values = ");
-    print_hex(reg_spi_pll_config & 0x78 >> 3, 2);
+//    print_hex(reg_spi_pll_config & 0x78 >> 3, 2);
+    print_hex(reg_spi_pll_config, 2);
     print("\n");
 
     print("Press ENTER to continue..\n");
