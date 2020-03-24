@@ -225,6 +225,7 @@ void main()
 	set_flash_latency(8);
 
     reg_xtal_out_dest = 0x0001;
+    reg_spi_pll_config = 0x7F;
 
 	// NOTE: Crystal on testboard running at 8MHz
 	// Internal clock is 8x crystal, or 64MHz
@@ -250,6 +251,9 @@ void main()
 
 	// This should appear on the LCD display 4x20 characters.
     print("Starting...\n");
+
+    print("PLL trim values = ");
+    print_hex(reg_spi_pll_config & 0x78 >> 3);
 
     print("Press ENTER to continue..\n");
     while (getchar() != '\r') {}
