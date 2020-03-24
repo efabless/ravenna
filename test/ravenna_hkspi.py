@@ -58,6 +58,8 @@ TIMINGS = {'page': (0.0015, 0.003),  # 1.5/3 ms
 #             SerialFlash.FEAT_CHIPERASE)
 
 RAVENNA_PASSTHRU = 0xC4
+RAVENNA_STREAM_READ = 0x40
+RAVENNA_STREAM_WRITE = 0x80
 
 
 def get_status(device):
@@ -270,6 +272,16 @@ with open(file_path, mode='r') as f:
             print(binascii.hexlify(buf2))
 
 print("\ntotal_bytes = {}".format(total_bytes))
+
+pll_trim = slave.exchange([RAVENNA_STREAM_READ, 0x04],1)
+print("pll_trim = {}\n".format(binascii.hexlify(pll_trim)))
+
+print("Setting trim values...\n")
+
+slave.write([RAVENNA_STREAM_WRITE, 0x04, 0x7f])
+
+pll_trim = slave.exchange([RAVENNA_STREAM_READ, 0x04],1)
+print("pll_trim = {}\n".format(binascii.hexlify(pll_trim)))
 
 spi.terminate()
 
