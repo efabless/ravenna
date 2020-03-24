@@ -224,6 +224,8 @@ void main()
 
 	set_flash_latency(8);
 
+    reg_xtal_out_dest = 0x0001;
+
 	// NOTE: Crystal on testboard running at 8MHz
 	// Internal clock is 8x crystal, or 64MHz
 	// Divided by clkdiv is 9.6 kHz
