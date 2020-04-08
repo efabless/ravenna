@@ -5,7 +5,7 @@ TOOLCHAIN_PATH = /opt/riscv32imc/bin/
 
 .SUFFIXES:
 
-PATTERN = adc
+PATTERN = adc adc1
 
 all: hex client
 
@@ -25,6 +25,9 @@ client: client.c
 
 flash: adc.hex
 	python3 ../../test/ravenna_hkspi.py adc.hex
+
+flash1: adc1.hex
+	python3 ../../test/ravenna_hkspi.py adc1.hex
 
 # ---- Clean ----
 
