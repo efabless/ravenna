@@ -153,8 +153,8 @@ void main()
         v = adcval;
         x = 1;
         while (1) {
-            if (v > 128) {
-                v = v - 128;
+            if (v > 256) {
+                v = v - 256;
                 x = x << 1;
                 x = x | 1;
             } else {
