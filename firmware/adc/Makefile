@@ -23,8 +23,8 @@ hex:  ${PATTERN:=.hex}
 client: client.c
 	gcc client.c -o client
 
-flash: uart.hex
-	python3 ../../test/ravenna_hkspi.py uart.hex
+flash: adc.hex
+	python3 ../../test/ravenna_hkspi.py adc.hex
 
 # ---- Clean ----
 

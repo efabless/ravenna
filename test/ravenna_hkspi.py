@@ -60,6 +60,8 @@ TIMINGS = {'page': (0.0015, 0.003),  # 1.5/3 ms
 RAVENNA_PASSTHRU = 0xC4
 RAVENNA_STREAM_READ = 0x40
 RAVENNA_STREAM_WRITE = 0x80
+RAVENNA_REG_READ = 0x48
+RAVENNA_REG_WRITE = 0x88
 
 
 def get_status(device):
@@ -103,6 +105,10 @@ print("mfg = {}".format(binascii.hexlify(mfg)))
 
 product = slave.exchange([0x48, 0x03], 1)
 print("product = {}".format(binascii.hexlify(product)))
+
+
+slave.write([0x88, 0x07, 0x01])
+slave.write([0x88, 0x07, 0x00])
 
 slave.write([RAVENNA_PASSTHRU, CMD_RESET_CHIP])
 
