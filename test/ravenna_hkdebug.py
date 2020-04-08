@@ -162,6 +162,9 @@ while (k != 'q'):
         pll_trim = slave.exchange([RAVENNA_REG_READ, 0x04], 1)
         print("pll_trim = {}\n".format(binascii.hexlify(pll_trim)))
 
+    elif k == 'q':
+        print("Exiting...")
+
     else:
         print('Selection not recognized.\n')
 
