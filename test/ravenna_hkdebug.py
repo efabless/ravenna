@@ -91,14 +91,17 @@ k = ''
 
 while (k != 'q'):
 
+    print("\n-----------------------------------\n")
     print("Select option:")
-    print("    (1) read Ravenna product codes ")
-    print("    (2) read Ravenna SPI registers ")
-    print("    (3) reset Ravenna")
-    print("    (4) reset Flash")
-    print("    (5) read Flash JEDEC codes")
-    print("    (6) start flash erase")
-    print("    (5) check flash status")
+    print("  (1) read Ravenna product codes ")
+    print("  (2) read Ravenna SPI registers ")
+    print("  (3) reset Ravenna")
+    print("  (4) reset Flash")
+    print("  (5) read Flash JEDEC codes")
+    print("  (6) start flash erase")
+    print("  (7) check flash status")
+    print("  (8) lock registers")
+    print("  (9) read pll trim")
 
     print("\n")
 
