@@ -121,7 +121,8 @@ void main()
     set_flash_latency(8);  // Single speed mode
 
     // Set UART clock to 9600 baud
-	reg_uart_clkdiv = 5000;   // for 6MHz osc
+	reg_uart_clkdiv = 6667;   // for 8MHz osc
+//	reg_uart_clkdiv = 5000;   // for 6MHz osc
 
 
 	// Enable the 100MHz RC oscillator on gpio[4] (overrides LED function)
@@ -152,8 +153,8 @@ void main()
         v = adcval;
         x = 1;
         while (1) {
-            if (v > 64) {
-                v = v - 64;
+            if (v > 128) {
+                v = v - 128;
                 x = x << 1;
                 x = x | 1;
             } else {
