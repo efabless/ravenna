@@ -119,17 +119,19 @@ while (k != 'q'):
         print("product = {}".format(binascii.hexlify(product)))
 
     elif k == '2':
-        for reg in [0x04, 0x05, 0x06, 0x07, 0x08, 0x09]:
+        for reg in [0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0a]:
             data = slave.exchange([RAVENNA_REG_READ, reg], 1)
             print("reg {} = {}".format(reg, binascii.hexlify(data)))
 
     elif k == '3':
         # reset Ravenna
+        print("Resetting Ravenna...")
         slave.write([RAVENNA_REG_WRITE, 0x07, 0x01])
         slave.write([RAVENNA_REG_WRITE, 0x07, 0x00])
 
     elif k == '4':
         # reset Flash
+        print("Resetting Flash...")
         slave.write([RAVENNA_PASSTHRU, CMD_RESET_CHIP])
 
     elif k == '5':
