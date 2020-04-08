@@ -106,7 +106,6 @@ print("mfg = {}".format(binascii.hexlify(mfg)))
 product = slave.exchange([RAVENNA_REG_READ, 0x03], 1)
 print("product = {}".format(binascii.hexlify(product)))
 
-
 slave.write([RAVENNA_REG_WRITE, 0x07, 0x01])
 slave.write([RAVENNA_REG_WRITE, 0x07, 0x00])
 

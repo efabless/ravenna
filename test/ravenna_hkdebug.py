@@ -93,8 +93,12 @@ while (k != 'q'):
 
     print("Select option:")
     print("    (1) read Ravenna product codes ")
-    print("    (2) read Ravenna product codes ")
+    print("    (2) read Ravenna SPI registers ")
     print("    (3) reset Ravenna")
+    print("    (4) reset Flash")
+    print("    (5) read Flash JEDEC codes")
+    print("    (6) start flash erase")
+    print("    (5) check flash status")
 
     print("\n")
 
@@ -112,7 +116,9 @@ while (k != 'q'):
         print("product = {}".format(binascii.hexlify(product)))
 
     elif k == '2':
-        xxx
+        for reg in [0x04, 0x05, 0x06, 0x07, 0x08, 0x09]:
+            data = slave.exchange([RAVENNA_REG_READ, reg], 1)
+            print("reg {} = {}".format(reg, binascii.hexlify(product)))
 
     elif k == '3':
         # reset Ravenna
@@ -120,193 +126,41 @@ while (k != 'q'):
         slave.write([RAVENNA_REG_WRITE, 0x07, 0x00])
 
     elif k == '4':
-        # reset flash
+        # reset Flash
         slave.write([RAVENNA_PASSTHRU, CMD_RESET_CHIP])
 
-    else:
-        print('Selection not recognized.\n')
+    elif k == '5':
+        jedec = slave.exchange([RAVENNA_PASSTHRU, CMD_JEDEC_DATA], 3)
+        print("JEDEC = {}".format(binascii.hexlify(jedec)))
 
+    elif k == '6':
+        # erase Flash
+        print("Starting Flash erase...")
+        slave.write([RAVENNA_PASSTHRU, CMD_WRITE_ENABLE])
+        slave.write([RAVENNA_PASSTHRU, CMD_ERASE_CHIP])
 
-    slave.write([RAVENNA_REG_WRITE, 0x07, 0x01])
-    slave.write([RAVENNA_REG_WRITE, 0x07, 0x00])
+    elif k == '7':
+        if is_busy(slave):
+            print("Flash is busy.")
+        else:
+            print("Flash is NOT busy.")
+        print("status reg_1 = {}".format(hex(get_status(slave))))
+        status = slave.exchange([RAVENNA_PASSTHRU, 0x35], 1)
+        print("status reg_2 = {}".format(hex(int.from_bytes(status, byteorder='big'))))
 
-    slave.write([RAVENNA_PASSTHRU, CMD_RESET_CHIP])
-
-    jedec = slave.exchange([RAVENNA_PASSTHRU, CMD_JEDEC_DATA], 3)
-    print("JEDEC = {}".format(binascii.hexlify(jedec)))
-
-    if jedec[0:1] != bytes.fromhex('ef'):
-        print("Winbond SRAM not found")
-        sys.exit()
-
-    print("status = 0x{}".format(get_status(slave), '02x'))
-
-    print("Erasing chip...")
-    slave.write([RAVENNA_PASSTHRU, CMD_WRITE_ENABLE])
-    slave.write([RAVENNA_PASSTHRU, CMD_ERASE_CHIP])
-
-    while (is_busy(slave)):
-        time.sleep(0.5)
-
-    print("done")
-    print("status = {}".format(hex(get_status(slave))))
-
-    buf = bytearray()
-    addr = 0
-    nbytes = 0
-    total_bytes = 0
-
-    with open(file_path, mode='r') as f:
-        x = f.readline()
-        while x != '':
-            if x[0] == '@':
-                addr = int(x[1:],16)
-                print('setting address to {}'.format(hex(addr)))
-            else:
-                # print(x)
-                values = bytearray.fromhex(x[0:len(x)-1])
-                buf[nbytes:nbytes] = values
-                nbytes += len(values)
-                # print(binascii.hexlify(values))
-
-            x = f.readline()
-
-            if nbytes >= 256:
-                total_bytes += nbytes
-                # print('\n----------------------\n')
-                # print(binascii.hexlify(buf))
-                # print("\ntotal_bytes = {}".format(total_bytes))
-
-                slave.write([RAVENNA_PASSTHRU, CMD_WRITE_ENABLE])
-                wcmd = bytearray((RAVENNA_PASSTHRU, CMD_PROGRAM_PAGE,(addr >> 16) & 0xff, (addr >> 8) & 0xff, addr & 0xff))
-                # print(binascii.hexlify(wcmd))
-                # wcmd.extend(buf[0:255])
-                wcmd.extend(buf)
-                slave.exchange(wcmd)
-                while (is_busy(slave)):
-                    time.sleep(0.1)
-
-                print("addr {}: flash page write successful".format(hex(addr)))
-
-                if nbytes > 256:
-                    buf = buf[255:]
-                    addr += 256
-                    nbytes -= 256
-                    print("*** over 256 hit")
-                else:
-                    buf = bytearray()
-                    addr += 256
-                    nbytes =0
-
-        if nbytes > 0:
-            total_bytes += nbytes
-            # print('\n----------------------\n')
-            # print(binascii.hexlify(buf))
-            # print("\nnbytes = {}".format(nbytes))
-
-            slave.write([RAVENNA_PASSTHRU, CMD_WRITE_ENABLE])
-            wcmd = bytearray((RAVENNA_PASSTHRU, CMD_PROGRAM_PAGE, (addr >> 16) & 0xff, (addr >> 8) & 0xff, addr & 0xff))
-            wcmd.extend(buf)
-            slave.exchange(wcmd)
-            while (is_busy(slave)):
-                time.sleep(0.1)
-
-            print("addr {}: flash page write successful".format(hex(addr)))
-
-    print("\ntotal_bytes = {}".format(total_bytes))
-
-    if jedec[0] != int('bf', 16):
+    elif k == '8':
         print("locking registers...")
         slave.write([RAVENNA_PASSTHRU, 0xaa])
         slave.write([RAVENNA_PASSTHRU, 0x55])
         slave.write([RAVENNA_PASSTHRU, 0x06])
         slave.write([RAVENNA_PASSTHRU, 0x31, 0x01])
 
-    report_status(jedec)
+    elif k == '9':
+        pll_trim = slave.exchange([RAVENNA_REG_READ, 0x04], 1)
+        print("pll_trim = {}\n".format(binascii.hexlify(pll_trim)))
 
-    print("************************************")
-    print("verifying...")
-    print("************************************")
-
-    buf = bytearray()
-    addr = 0
-    nbytes = 0
-    total_bytes = 0
-
-    while (is_busy(slave)):
-        time.sleep(0.5)
-
-    report_status(jedec)
-
-    with open(file_path, mode='r') as f:
-        x = f.readline()
-        while x != '':
-            if x[0] == '@':
-                addr = int(x[1:],16)
-                print('setting address to {}'.format(hex(addr)))
-            else:
-                # print(x)
-                values = bytearray.fromhex(x[0:len(x)-1])
-                buf[nbytes:nbytes] = values
-                nbytes += len(values)
-                # print(binascii.hexlify(values))
-
-            x = f.readline()
-
-            if nbytes >= 256:
-                total_bytes += nbytes
-                # print('\n----------------------\n')
-                # print(binascii.hexlify(buf))
-                # print("\ntotal_bytes = {}".format(total_bytes))
-
-                read_cmd = bytearray((RAVENNA_PASSTHRU, CMD_READ_LO_SPEED,(addr >> 16) & 0xff, (addr >> 8) & 0xff, addr & 0xff))
-                # print(binascii.hexlify(read_cmd))
-                buf2 = slave.exchange(read_cmd, nbytes)
-                if buf == buf2:
-                    print("addr {}: read compare successful".format(hex(addr)))
-                else:
-                    print("addr {}: *** read compare FAILED ***".format(hex(addr)))
-                    print(binascii.hexlify(buf))
-                    print("<----->")
-                    print(binascii.hexlify(buf2))
-
-                if nbytes > 256:
-                    buf = buf[255:]
-                    addr += 256
-                    nbytes -= 256
-                    print("*** over 256 hit")
-                else:
-                    buf = bytearray()
-                    addr += 256
-                    nbytes =0
-
-        if nbytes > 0:
-            total_bytes += nbytes
-            # print('\n----------------------\n')
-            # print(binascii.hexlify(buf))
-            # print("\nnbytes = {}".format(nbytes))
-
-            read_cmd = bytearray((RAVENNA_PASSTHRU, CMD_READ_LO_SPEED, (addr >> 16) & 0xff, (addr >> 8) & 0xff, addr & 0xff))
-            # print(binascii.hexlify(read_cmd))
-            buf2 = slave.exchange(read_cmd, nbytes)
-            if buf == buf2:
-                print("addr {}: read compare successful".format(hex(addr)))
-            else:
-                print("addr {}: *** read compare FAILED ***".format(hex(addr)))
-                print(binascii.hexlify(buf))
-                print("<----->")
-                print(binascii.hexlify(buf2))
-
-    print("\ntotal_bytes = {}".format(total_bytes))
-
-    pll_trim = slave.exchange([RAVENNA_REG_READ, 0x04],1)
-    print("pll_trim = {}\n".format(binascii.hexlify(pll_trim)))
-
-    # print("Setting trim values...\n")
-    # slave.write([RAVENNA_REG_WRITE, 0x04, 0x7f])
-
-    # pll_trim = slave.exchange([RAVENNA_REG_READ, 0x04],1)
-    # print("pll_trim = {}\n".format(binascii.hexlify(pll_trim)))
+    else:
+        print('Selection not recognized.\n')
 
 spi.terminate()
 
