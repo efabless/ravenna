@@ -97,18 +97,18 @@ spi = SpiController()
 spi.configure('ftdi://::/1')
 slave = spi.get_port(cs=0)  # Chip select is 0 -- corresponds to D3
 
-vendor = slave.exchange([0x48, 0x01], 1)
+vendor = slave.exchange([RAVENNA_REG_READ, 0x01], 1)
 print("vendor = {}".format(binascii.hexlify(vendor)))
 
-mfg = slave.exchange([0x48, 0x02], 1)
+mfg = slave.exchange([RAVENNA_REG_READ, 0x02], 1)
 print("mfg = {}".format(binascii.hexlify(mfg)))
 
-product = slave.exchange([0x48, 0x03], 1)
+product = slave.exchange([RAVENNA_REG_READ, 0x03], 1)
 print("product = {}".format(binascii.hexlify(product)))
 
 
-slave.write([0x88, 0x07, 0x01])
-slave.write([0x88, 0x07, 0x00])
+slave.write([RAVENNA_REG_WRITE, 0x07, 0x01])
+slave.write([RAVENNA_REG_WRITE, 0x07, 0x00])
 
 slave.write([RAVENNA_PASSTHRU, CMD_RESET_CHIP])
 
@@ -279,13 +279,13 @@ with open(file_path, mode='r') as f:
 
 print("\ntotal_bytes = {}".format(total_bytes))
 
-pll_trim = slave.exchange([RAVENNA_STREAM_READ, 0x04],1)
+pll_trim = slave.exchange([RAVENNA_REG_READ, 0x04],1)
 print("pll_trim = {}\n".format(binascii.hexlify(pll_trim)))
 
 # print("Setting trim values...\n")
-# slave.write([RAVENNA_STREAM_WRITE, 0x04, 0x7f])
+# slave.write([RAVENNA_REG_WRITE, 0x04, 0x7f])
 
-# pll_trim = slave.exchange([RAVENNA_STREAM_READ, 0x04],1)
+# pll_trim = slave.exchange([RAVENNA_REG_READ, 0x04],1)
 # print("pll_trim = {}\n".format(binascii.hexlify(pll_trim)))
 
 spi.terminate()
