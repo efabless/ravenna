@@ -133,7 +133,7 @@ void main()
 	reg_adc0_ena = 1;
 
 	// Enable GPIO (all output, ena = 0)
-	reg_gpio_ena = 0x0000;
+	reg_gpio_enb = 0x0000;
 	reg_gpio_data = 0x0001;
 
 	while (1) {
