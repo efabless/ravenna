@@ -121,7 +121,7 @@ while (k != 'q'):
     elif k == '2':
         for reg in [0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0a]:
             data = slave.exchange([RAVENNA_REG_READ, reg], 1)
-            print("reg {} = {}".format(reg, binascii.hexlify(data)))
+            print("reg 0x{} = {}".format(hex(reg), binascii.hexlify(data)))
 
     elif k == '3':
         # reset Ravenna
