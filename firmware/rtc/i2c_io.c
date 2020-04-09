@@ -56,7 +56,7 @@ void i2c_wait()
 
 bool i2c_check_ack()
 {
-    return reg_i2c_status & I2C_ACK;
+    return reg_i2c_status & I2C_CHECK_ACK;
 }
 
 void i2c_send_ack()
