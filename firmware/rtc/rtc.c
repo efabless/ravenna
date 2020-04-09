@@ -307,11 +307,18 @@ void main()
 
 //	rtc_run();
 
-	for (j = 0; j < 70000; j++);
+	reg_gpio_enb = 0x0000;
+	reg_gpio_data = 0x0001;
+
+    for (j = 0; j < 70000; j++);
+
+    reg_gpio_data = 0x0008;
 
 	// This should appear on the LCD display 4x20 characters.
     print("Starting...\n");
     i2c_init();
+
+    reg_gpio_data = 0x0005;
 
     print("Press ENTER to continue..\n");
     while (getchar() != '\r') {}
@@ -319,6 +326,8 @@ void main()
 //    cmd_echo();
 
     print("\n\n");
+
+    reg_gpio_data = 0x0005;
 
 	while (1) {
 
