@@ -11,8 +11,8 @@ all: hex client
 
 hex:  ${PATTERN:=.hex}
 
-%.elf: %.c ../sections.lds ../start.s
-	$(TOOLCHAIN_PATH)riscv32-unknown-elf-gcc -march=rv32imc -Wl,-Bstatic,-T,../sections.lds,--strip-debug -ffreestanding -nostdlib -o $@ ../start.s $<
+%.elf: %.c ../sections.lds ../start.s i2c_io.c i2c_io.h
+	$(TOOLCHAIN_PATH)riscv32-unknown-elf-gcc -march=rv32imc -Wl,-Bstatic,-T,../sections.lds,--strip-debug -ffreestanding -nostdlib -o $@ ../start.s i2c_io.c $<
 
 %.hex: %.elf
 	$(TOOLCHAIN_PATH)riscv32-unknown-elf-objcopy -O verilog $< $@
