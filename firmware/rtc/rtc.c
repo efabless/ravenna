@@ -1,4 +1,4 @@
-#include "../raven_defs.h"
+#include "../ravenna_defs.h"
 #include "i2c_io.h"
 
 //extern void write_i2c_slave(uint32_t slave_addr, uint32_t word_addr, uint32_t data);
