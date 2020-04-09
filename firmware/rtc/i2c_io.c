@@ -74,16 +74,16 @@ bool i2c_start_write(volatile uint32_t data)
     reg_i2c_data = data;
     reg_i2c_command = I2C_START_WRITE;
     i2c_wait();
-    return i2c_check_ack()
+    return i2c_check_ack();
 }
 
 bool i2c_write(volatile uint32_t data)
 {
 
-    reg_i2c_data = slave_addr;
+    reg_i2c_data = data;
     reg_i2c_command = I2C_WRITE;
     i2c_wait();
-    return i2c_check_ack()
+    return i2c_check_ack();
 
 }
 
@@ -119,7 +119,7 @@ uint32_t read_i2c_slave_byte(volatile uint32_t slave_addr, volatile uint32_t wor
     if (i2c_write(slave_addr))
         i2c_stop();
     i2c_write(word_addr);
-    data = i2c_read();
+    data = i2c_read(false);
 
     i2c_stop();
 
