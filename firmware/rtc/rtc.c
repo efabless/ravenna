@@ -289,23 +289,12 @@ void read_rtc()
 
 void main()
 {
-	uint32_t i, j, m, r, mode;
-	uint32_t adcval;
-	uint32_t dacval;
+	uint32_t i, j;
 	uint32_t data;
-
-	/* Note that it definitely does not work in simulation because	*/
-	/* the behavioral verilog for the SPI flash does not support	*/
-	/* the configuration register read/write functions.		*/
 
 	set_flash_latency(8);
 
 	// Start in standard (1x speed) mode
-
-	// Set m for speed multiplier:
-	// 1 standard (1x), 2 for DSPI (2x)
-	mode = 1;
-	m = 1;
 
 	// NOTE: Crystal on testboard running at 12.5MHz
 	// Internal clock is 8x crystal, or 100MHz
@@ -318,11 +307,10 @@ void main()
 
 //	rtc_run();
 
-	// Need boot-up time for the display;  give it 4 seconds
-	for (j = 0; j < 700000 * m; j++);
+	for (j = 0; j < 70000; j++);
 
 	// This should appear on the LCD display 4x20 characters.
-    print_ln("Starting...\n");
+    print("Starting...\n");
     i2c_init();
 
     print("Press ENTER to continue..\n");
@@ -337,7 +325,7 @@ void main()
         // read and display real-time clock
         read_rtc();
 
-        for (j = 0; j < 350000 * m; j++); // 2 sec
+        for (j = 0; j < 70000; j++); // 2 sec
 
 	}
 }
