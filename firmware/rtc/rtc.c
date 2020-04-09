@@ -327,7 +327,7 @@ void main()
 
     print("\n\n");
 
-    reg_gpio_data = 0x0005;
+    reg_gpio_data = 0x000f;
 
 	while (1) {
 

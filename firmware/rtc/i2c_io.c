@@ -40,8 +40,9 @@ void i2c_init()
 {
     // enable (bit 23)
     // clock divider 0x0280 = 100kb/s (standard mode)
-    reg_i2c_config = 0x00000280;
-    reg_i2c_config = 0x00800280;
+    // clock divider 0x00a0 = 100kb/s (standard mode)
+    reg_i2c_config = 0x000000a0;
+    reg_i2c_config = 0x008000a0;
 }
 
 void i2c_stop()
