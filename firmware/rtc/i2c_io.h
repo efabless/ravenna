@@ -1,6 +1,6 @@
 #ifndef I2C_IO_H
 #define I2C_IO_H
-#include "../raven_defs.h"
+#include "../ravenna_defs.h"
 
 #define RTC_I2C_ADDR (uint32_t) 0xA2 // RTC PCF8563
 //#define RTC_I2C_ADDR (uint32_t)0xD0 // RTC DS3231
