@@ -44,11 +44,6 @@ void i2c_init()
     reg_i2c_config = 0x00800280;
 }
 
-void i2c_start_write()
-{
-    reg_i2c_command = I2C_START_WRITE;
-}
-
 void i2c_stop()
 {
     reg_i2c_command = I2C_STOP;
