@@ -8,10 +8,12 @@
 void write_i2c_slave(volatile uint32_t slave_addr, volatile uint32_t word_addr, volatile uint32_t data);
 uint32_t read_i2c_slave_byte(volatile uint32_t slave_addr, volatile uint32_t word_addr);
 void read_i2c_slave_bytes(volatile uint32_t slave_addr, volatile uint32_t word_addr, volatile uint32_t *data, int len);
-void i2c_init();
+void i2c_init(unsigned int pre);
 void i2c_start();
 void i2c_stop();
 bool i2c_write(volatile uint32_t data);
 uint32_t i2c_read(bool ack);
+
+int i2c_send(unsigned char saddr, unsigned char sdata);
 
 #endif // I2C_IO_H

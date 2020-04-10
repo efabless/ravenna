@@ -1,20 +1,44 @@
 #include "../ravenna_defs.h"
 #include "i2c_io.h"
 
-#define SDA_PIN (uint32_t) (1 << 14) // bit 14
-#define SCL_PIN (uint32_t) (1 << 15) // bit 15
+// command register bits
+// bit 7 = start
+// bit 6 = stop
+// bit 5 = read
+// bit 4 = write
 
-#define SCL_OUT (volatile uint32_t) ((reg_gpio_ena) &= ~(SCL_PIN))
-#define SCL_IN (volatile uint32_t) (reg_gpio_ena |= (SCL_PIN))
-#define SDA_OUT (volatile uint32_t) ((reg_gpio_ena) &= ~(SDA_PIN))
-#define SDA_IN (volatile uint32_t) (reg_gpio_ena |= (SDA_PIN))
+// control register bits
+// bit 27 = acknowledge
+// bit 24 = interrupt acknowledge
+// bit 23 = enable
+// bit 22 = interrupt enable
 
-#define SCL_HIGH SCL_IN
-#define SCL_LOW SCL_OUT; (volatile uint32_t) ((reg_gpio_data) &= ~(SCL_PIN))
-#define SCL_READ (volatile uint32_t) ((reg_gpio_data) & (SCL_PIN))
-#define SDA_HIGH SDA_IN
-#define SDA_LOW SDA_OUT; (volatile uint32_t) ((reg_gpio_data) &= ~(SDA_PIN))
-#define SDA_READ (volatile uint32_t) ((reg_gpio_data) & (SDA_PIN))
+// bits 15-0:  clock prescaler
+
+#define     I2C_CMD_STA         0x80
+#define     I2C_CMD_STO         0x40
+#define     I2C_CMD_RD          0x20
+#define     I2C_CMD_WR          0x10
+#define     I2C_CMD_ACK         0x08
+#define     I2C_CMD_IACK        0x01
+
+#define     I2C_CTRL_EN         0x80
+#define     I2C_CTRL_IEN        0x40
+
+// status regiter bits:
+// bit 7 = receive acknowledge
+// bit 6 = busy (start signal detected)
+// bit 5 = arbitration lost
+// bit 1 = transfer in progress
+// bit 0 = interrupt flag
+
+#define     I2C_STAT_RXACK      0x80
+#define     I2C_STAT_BUSY       0x40
+#define     I2C_STAT_AL         0x20
+#define     I2C_STAT_TIP        0x02
+#define     I2C_STAT_IF         0x01
+
+-----
 
 #define I2C_START           0x80
 #define I2C_START_WRITE     0x90
@@ -25,24 +49,44 @@
 #define I2C_CHECK_ACK       0x80
 #define I2C_SEND_ACK        0x08
 
-void i2c_delay()
+void i2c_init(unsigned int pre)
 {
 
-//  I2C standard mode (100k) = 5 usec min hold time
+    reg_i2c_control = (uint16_t)(I2C_CTRL_EN | I2C_CTRL_IEN);
+    reg_i2c_prescale = (uint16_t) pre;
 
-//	for (int j = 0; j < 200000; j++);  // 1 secs
-//	for (int j = 0; j < 100000; j++);  // 0.5 secs
-	for (int j = 0; j < 1; j++);  // ~23 usec (measured)
-
-}
-
-void i2c_init()
-{
     // enable (bit 23)
     // clock divider 0x0280 = 100kb/s (standard mode)
     // clock divider 0x00a0 = 100kb/s (standard mode)
-    reg_i2c_config = 0x000000a0;
-    reg_i2c_config = 0x008000a0;
+//    reg_i2c_config = 0x000000a0;
+//    reg_i2c_config = 0x008000a0;
+//    reg_i2c_control = ;
+//    reg_i2c_prescale = ;
+}
+
+int i2c_send(unsigned char saddr, unsigned char sdata) {
+
+    int volatile y;
+    reg_i2c_data = saddr;
+    reg_i2c_command = I2C_CMD_STA | I2C_CMD_WR;
+
+    while ((reg_i2c_status & I2C_STAT_TIP) != 0);
+
+    if ((reg_i2c_status & I2C_STAT_RXACK)  == 1) {
+        reg_i2c_command = I2C_CMD_STO;
+        return 0;
+    }
+
+    reg_i2c_data = sdata;
+    reg_i2c_command = I2C_CMD_WR;
+
+    while (reg_i2c_status & I2C_STAT_TIP);
+    reg_i2c_command = I2C_CMD_STO;
+
+    if ((reg_i2c_status & I2C_STAT_RXACK) == 1)
+        return 0;
+    else
+        return 1;
 }
 
 void i2c_stop()

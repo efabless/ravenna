@@ -292,6 +292,8 @@ void main()
 	uint32_t i, j;
 	uint32_t data;
 
+	int r;
+
 	set_flash_latency(8);
 
 	// Start in standard (1x speed) mode
@@ -316,25 +318,38 @@ void main()
 
 	// This should appear on the LCD display 4x20 characters.
     print("Starting...\n");
-    i2c_init();
 
-    reg_gpio_data = 0x0005;
+    reg_i2c_config = 0;
+    reg_i2c_data = 0;
 
-    print("Press ENTER to continue..\n");
-    while (getchar() != '\r') {}
+    // Enable I2C with prescaler set to 5
+    i2c_init(5);
 
-//    cmd_echo();
 
-    print("\n\n");
 
-    reg_gpio_data = 0x000f;
+//    i2c_init();
+//
+//    reg_gpio_data = 0x0005;
+//
+//    print("Press ENTER to continue..\n");
+//    while (getchar() != '\r') {}
+//
+////    cmd_echo();
+//
+//    print("\n\n");
+//
+//    reg_gpio_data = 0x000f;
 
 	while (1) {
 
         // read and display real-time clock
-        read_rtc();
+//        read_rtc();
+
+        // Send command 6, data byte 0xfa
+        r = i2c_send(0x6, 0xfa);
 
         for (j = 0; j < 70000; j++); // 2 sec
+
 
 	}
 }
