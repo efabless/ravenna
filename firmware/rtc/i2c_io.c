@@ -68,7 +68,8 @@ int i2c_send(unsigned char saddr, unsigned char sdata) {
 
     int volatile y;
     reg_i2c_data = saddr;
-    reg_i2c_command = I2C_CMD_STA | I2C_CMD_WR;
+    reg_i2c_command = I2C_CMD_STA;
+    reg_i2c_command = I2C_CMD_WR;
 
     while ((reg_i2c_status & I2C_STAT_TIP) != 0);
 
