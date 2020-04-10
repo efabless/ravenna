@@ -38,7 +38,7 @@
 #define     I2C_STAT_TIP        0x02
 #define     I2C_STAT_IF         0x01
 
------
+// -----
 
 #define I2C_START           0x80
 #define I2C_START_WRITE     0x90
