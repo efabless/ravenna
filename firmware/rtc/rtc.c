@@ -323,7 +323,8 @@ void main()
     reg_i2c_data = 0;
 
     // Enable I2C with prescaler set to 5
-    i2c_init(5);
+//    i2c_init(5);
+    i2c_init(128);
 
 
 
