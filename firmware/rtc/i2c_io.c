@@ -1,53 +1,9 @@
 #include "../ravenna_defs.h"
 #include "i2c_io.h"
 
-// command register bits
-// bit 7 = start
-// bit 6 = stop
-// bit 5 = read
-// bit 4 = write
 
-// control register bits
-// bit 27 = acknowledge
-// bit 24 = interrupt acknowledge
-// bit 23 = enable
-// bit 22 = interrupt enable
 
-// bits 15-0:  clock prescaler
 
-#define     I2C_CMD_STA         0x80
-#define     I2C_CMD_STO         0x40
-#define     I2C_CMD_RD          0x20
-#define     I2C_CMD_WR          0x10
-#define     I2C_CMD_ACK         0x08
-#define     I2C_CMD_IACK        0x01
-
-#define     I2C_CTRL_EN         0x80
-#define     I2C_CTRL_IEN        0x40
-
-// status regiter bits:
-// bit 7 = receive acknowledge
-// bit 6 = busy (start signal detected)
-// bit 5 = arbitration lost
-// bit 1 = transfer in progress
-// bit 0 = interrupt flag
-
-#define     I2C_STAT_RXACK      0x80
-#define     I2C_STAT_BUSY       0x40
-#define     I2C_STAT_AL         0x20
-#define     I2C_STAT_TIP        0x02
-#define     I2C_STAT_IF         0x01
-
-// -----
-
-#define I2C_START           0x80
-#define I2C_START_WRITE     0x90
-#define I2C_STOP            0x40
-#define I2C_READ            0x20
-#define I2C_WRITE           0x10
-#define I2C_BUSY            0x02
-#define I2C_CHECK_ACK       0x80
-#define I2C_SEND_ACK        0x08
 
 void i2c_init(unsigned int pre)
 {
@@ -78,7 +34,7 @@ int i2c_send(unsigned char saddr, unsigned char sdata) {
 
     if ((reg_i2c_status & I2C_STAT_RXACK)  == 1) {
         reg_i2c_command = I2C_CMD_STO;
-        return 0;
+        return 1;
     }
 
     reg_i2c_data = sdata;

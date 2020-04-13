@@ -340,15 +340,15 @@ void main()
 	while (1) {
 
         // read and display real-time clock
-//        read_rtc();
+        // read_rtc();
 
         reg_gpio_data = 0x0001;
 
         // Send command 6, data byte 0xfa
         r = i2c_send(0x6, 0xfa);
 
-        if (!r)
-            reg_gpio_data = 0x0003;
+        if (r != 0)
+            reg_gpio_data |= 0x0002;
 
         for (j = 0; j < 70000; j++);
 
@@ -357,9 +357,11 @@ void main()
         // Send command 6, data byte 0xfa
         r = i2c_send(0x6, 0xfa);
 
-        if (!r)
-            reg_gpio_data = 0x000a;
+        if (r != 0)
+            reg_gpio_data |= 0x0002;
 
+        if (((reg_i2c_status & I2C_STAT_AL)  == 1) || ((reg_i2c_status & I2C_STAT_IF) == 1)
+            reg_gpio_data |= 0x0004;
 
         for (j = 0; j < 70000; j++); // 2 sec
 
