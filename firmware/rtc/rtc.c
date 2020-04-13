@@ -317,7 +317,7 @@ void main()
     reg_gpio_data = 0x0008;
 
 	// This should appear on the LCD display 4x20 characters.
-    print("Starting...\n");
+//    print("Starting...\n");
 
     reg_i2c_config = 0;
     reg_i2c_data = 0;
