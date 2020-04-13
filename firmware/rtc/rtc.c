@@ -342,11 +342,19 @@ void main()
         // read and display real-time clock
 //        read_rtc();
 
+        reg_gpio_data = 0x0001;
+
+        // Send command 6, data byte 0xfa
+        r = i2c_send(0x6, 0xfa);
+
+        for (j = 0; j < 70000; j++);
+
+        reg_gpio_data = 0x0008;
+
         // Send command 6, data byte 0xfa
         r = i2c_send(0x6, 0xfa);
 
         for (j = 0; j < 70000; j++); // 2 sec
-
 
 	}
 }
