@@ -347,12 +347,19 @@ void main()
         // Send command 6, data byte 0xfa
         r = i2c_send(0x6, 0xfa);
 
+        if (!r)
+            reg_gpio_data = 0x0003;
+
         for (j = 0; j < 70000; j++);
 
         reg_gpio_data = 0x0008;
 
         // Send command 6, data byte 0xfa
         r = i2c_send(0x6, 0xfa);
+
+        if (!r)
+            reg_gpio_data = 0x000a;
+
 
         for (j = 0; j < 70000; j++); // 2 sec
 
