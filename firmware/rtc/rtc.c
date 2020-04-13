@@ -322,13 +322,9 @@ void main()
     reg_i2c_config = 0;
     reg_i2c_data = 0;
 
-    // Enable I2C with prescaler set to 5
-//    i2c_init(5);
-    i2c_init(128);
+    // Enable I2C with prescaler set for 100Mb/s (standard mode)
+    i2c_init(127);
 
-
-
-//    i2c_init();
 //
 //    reg_gpio_data = 0x0005;
 //

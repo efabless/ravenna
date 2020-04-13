@@ -52,8 +52,10 @@
 void i2c_init(unsigned int pre)
 {
 
-    reg_i2c_control = (uint16_t)(I2C_CTRL_EN | I2C_CTRL_IEN);
+    reg_i2c_control = 0;
     reg_i2c_prescale = (uint16_t) pre;
+    reg_i2c_control = (uint16_t)(I2C_CTRL_EN);
+//    reg_i2c_control = (uint16_t)(I2C_CTRL_EN | I2C_CTRL_IEN);
 
     // enable (bit 23)
     // clock divider 0x0280 = 100kb/s (standard mode)
