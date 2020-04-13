@@ -354,7 +354,10 @@ void main()
             reg_gpio_data |= 0x0004;
 
         if ((reg_i2c_status & I2C_STAT_IF)  == 1)
+        {
             reg_gpio_data |= 0x0008;
+            reg_i2c_command = 0x0001;
+        }
 
         for (j = 0; j < 70000; j++);
 
@@ -370,7 +373,10 @@ void main()
             reg_gpio_data |= 0x0004;
 
         if ((reg_i2c_status & I2C_STAT_IF)  == 1)
+        {
             reg_gpio_data |= 0x0008;
+            reg_i2c_command = 0x0001;
+        }
 
         for (j = 0; j < 70000; j++); // 2 sec
 
