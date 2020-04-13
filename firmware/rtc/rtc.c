@@ -350,9 +350,15 @@ void main()
         if (r != 0)
             reg_gpio_data |= 0x0002;
 
+        if ((reg_i2c_status & I2C_STAT_AL)  == 1)
+            reg_gpio_data |= 0x0004;
+
+        if ((reg_i2c_status & I2C_STAT_IF)  == 1)
+            reg_gpio_data |= 0x0008;
+
         for (j = 0; j < 70000; j++);
 
-        reg_gpio_data = 0x0008;
+        reg_gpio_data = 0x0000;
 
         // Send command 6, data byte 0xfa
         r = i2c_send(0x6, 0xfa);
@@ -360,8 +366,11 @@ void main()
         if (r != 0)
             reg_gpio_data |= 0x0002;
 
-        if (((reg_i2c_status & I2C_STAT_AL)  == 1) || ((reg_i2c_status & I2C_STAT_IF) == 1))
+        if ((reg_i2c_status & I2C_STAT_AL)  == 1)
             reg_gpio_data |= 0x0004;
+
+        if ((reg_i2c_status & I2C_STAT_IF)  == 1)
+            reg_gpio_data |= 0x0008;
 
         for (j = 0; j < 70000; j++); // 2 sec
 
