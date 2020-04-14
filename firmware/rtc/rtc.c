@@ -361,7 +361,7 @@ void main()
         }
 
         print("data = ");
-        print_hex(data, 1);
+        print_hex(data, 2);
         print("  0x");
         print_hex(reg_i2c_status, 2);
         print("\n");
