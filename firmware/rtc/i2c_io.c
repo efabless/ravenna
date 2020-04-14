@@ -117,7 +117,7 @@ uint32_t read_i2c_slave_byte(volatile uint32_t slave_addr, volatile uint32_t wor
 {
    	volatile uint32_t data;
 
-    i2c_start_write(slave_addr << 1)
+    i2c_start_write(slave_addr << 1);
 //    if (i2c_start_write(slave_addr << 1))
 //        i2c_stop();
     i2c_write(word_addr);
