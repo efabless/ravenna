@@ -359,9 +359,9 @@ void main()
             reg_i2c_command = 0x0001;
         }
 
-        print('0x');
+        print("0x");
         print_hex(reg_i2c_status, 2);
-        print('\n');
+        print("\n");
 
         for (j = 0; j < 70000; j++);
 
