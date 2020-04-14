@@ -347,8 +347,6 @@ void main()
         // Send command 6, data byte 0xfa
         r = i2c_send(RTC_I2C_ADDR, 0xfa);
 
-        print_hex(reg_i2c_status, 2);
-
         if (r != 0)
             reg_gpio_data |= 0x0002;
 
@@ -360,6 +358,8 @@ void main()
             reg_gpio_data |= 0x0008;
             reg_i2c_command = 0x0001;
         }
+
+        print_hex(reg_i2c_status, 2);
 
         for (j = 0; j < 70000; j++);
 
