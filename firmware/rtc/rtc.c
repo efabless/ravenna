@@ -345,10 +345,11 @@ void main()
         reg_gpio_data = 0x0001;
 
         // Send command 6, data byte 0xfa
-        r = i2c_send(RTC_I2C_ADDR, 0xfa);
+//        r = i2c_send(RTC_I2C_ADDR, 0xfa);
+        data = read_i2c_slave_byte(RTC_I2C_ADDR, 0x02);
 
-        if (r != 0)
-            reg_gpio_data |= 0x0002;
+//        if (r != 0)
+//            reg_gpio_data |= 0x0002;
 
         if ((reg_i2c_status & I2C_STAT_AL)  == 1)
             reg_gpio_data |= 0x0004;
@@ -370,10 +371,12 @@ void main()
         reg_gpio_data = 0x0000;
 
         // Send command 6, data byte 0xfa
-        r = i2c_send(RTC_I2C_ADDR, 0xfa);
+//        r = i2c_send(RTC_I2C_ADDR, 0xfa);
+        data = read_i2c_slave_byte(RTC_I2C_ADDR, 0x02);
 
-        if (r != 0)
-            reg_gpio_data |= 0x0002;
+
+//        if (r != 0)
+//            reg_gpio_data |= 0x0002;
 
         if ((reg_i2c_status & I2C_STAT_AL)  == 1)
             reg_gpio_data |= 0x0004;
