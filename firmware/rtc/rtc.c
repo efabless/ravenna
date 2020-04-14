@@ -364,7 +364,7 @@ void main()
         print_hex(r, 1);
         print("  0x");
         print_hex(reg_i2c_status, 2);
-        print(" ");
+        print("\n");
 
         for (j = 0; j < 70000; j++);
 
