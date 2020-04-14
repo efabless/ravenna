@@ -360,8 +360,8 @@ void main()
             reg_i2c_command = 0x0001;
         }
 
-        print("r = ");
-        print_hex(r, 1);
+        print("data = ");
+        print_hex(data, 1);
         print("  0x");
         print_hex(reg_i2c_status, 2);
         print("\n");
