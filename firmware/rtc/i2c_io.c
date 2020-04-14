@@ -42,7 +42,7 @@ int i2c_send(unsigned char saddr, unsigned char sdata) {
     if ((reg_i2c_status & I2C_STAT_RXACK) == 1)
         return 0;
     else
-        return 1;
+        return 2;
 }
 
 void i2c_stop()
