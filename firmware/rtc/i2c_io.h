@@ -38,17 +38,6 @@
 #define     I2C_STAT_TIP        0x02
 #define     I2C_STAT_IF         0x01
 
-// -----
-
-#define I2C_START           0x80
-#define I2C_START_WRITE     0x90
-#define I2C_STOP            0x40
-#define I2C_READ            0x20
-#define I2C_WRITE           0x10
-#define I2C_BUSY            0x02
-#define I2C_CHECK_ACK       0x80
-#define I2C_SEND_ACK        0x08
-
 #define RTC_I2C_ADDR (uint32_t) 0xA2 // RTC PCF8563
 //#define RTC_I2C_ADDR (uint32_t)0xD0 // RTC DS3231
 
