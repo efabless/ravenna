@@ -45,24 +45,29 @@ int i2c_send(unsigned char saddr, unsigned char sdata) {
         return 2;
 }
 
+void i2c_start()
+{
+    reg_i2c_command = I2C_CMD_STA;
+}
+
 void i2c_stop()
 {
-    reg_i2c_command = I2C_STOP;
+    reg_i2c_command = I2C_CMD_STO;
 }
 
 void i2c_wait()
 {
-    while (reg_i2c_status & I2C_BUSY) {}
+    while (reg_i2c_status & I2C_STAT_TIP);
 }
 
 bool i2c_check_ack()
 {
-    return reg_i2c_status & I2C_CHECK_ACK;
+    return reg_i2c_status & I2C_STAT_RXACK;
 }
 
 void i2c_send_ack()
 {
-    reg_i2c_command = I2C_SEND_ACK;
+    reg_i2c_command = I2C_CMD_ACK;
 }
 
 bool i2c_start_write(volatile uint32_t data)
@@ -112,10 +117,11 @@ uint32_t read_i2c_slave_byte(volatile uint32_t slave_addr, volatile uint32_t wor
 {
    	volatile uint32_t data;
 
-    if (i2c_start_write(slave_addr << 1))
-        i2c_stop();
+    i2c_start_write(slave_addr << 1)
+//    if (i2c_start_write(slave_addr << 1))
+//        i2c_stop();
     i2c_write(word_addr);
-    i2c_write(slave_addr << 1 | (uint32_t) 0x0001);
+    i2c_start_write(slave_addr << 1 | (uint32_t) 0x0001);
     data = i2c_read(false);
     i2c_stop();
 
