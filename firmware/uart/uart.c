@@ -269,10 +269,10 @@ void main()
     for(count=0;;count++) {
 		reg_gpio_data = (count >> 16);
         // for (j = 0; j < 17000; j++); // 2 sec
-        if ((count & 0xfffff) == 0) {
-//            print_hex(count, 8);
-//            print("\n");
             print("A");
+        if ((count & 0xfffff) == 0) {
+            print_hex(count, 8);
+            print("\n");
         }
     }
 }
