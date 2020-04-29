@@ -252,27 +252,28 @@ void main()
 	// This should appear on the LCD display 4x20 characters.
     print("Starting...\n");
 
-    print("PLL trim values = ");
+//    print("PLL trim values = ");
 //    print_hex(reg_spi_pll_config & 0x78 >> 3, 2);
-    print_hex(reg_spi_pll_config, 2);
-    print("\n");
+//    print_hex(reg_spi_pll_config, 2);
+//    print("\n");
 
-    print("Press ENTER to continue..\n");
+//    print("Press ENTER to continue..\n");
 //    while (getchar() != '\r') {}
 
     reg_gpio_data = 0x000a;
 //    cmd_echo();
-    reg_gpio_data = 0x0000;
+//    reg_gpio_data = 0x0000;
 
     print("\n\n");
 
     for(count=0;;count++) {
 		reg_gpio_data = (count >> 16);
         // for (j = 0; j < 17000; j++); // 2 sec
-            print("A");
-        if ((count & 0xfffff) == 0) {
+//        if ((count & 0xfffff) == 0) {
+        if ((count & 0xff) == 0) {
             print_hex(count, 8);
             print("\n");
+            print("A");
         }
     }
 }
