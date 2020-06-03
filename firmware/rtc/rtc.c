@@ -10,7 +10,15 @@
 //extern uint32_t i2c_write(volatile uint32_t data);
 //extern uint32_t i2c_read(bool ack);
 
-//#define RTC_I2C_ADDR (uint32_t) 0xA2 // RTC PCF8563
+#define RTC_I2C_ADDR (uint32_t) 0xA2 // RTC PCF8563
+#define RTC_I2C_REG (uint32_t) 0x02 // RTC PCF8563
+
+//#define RTC_I2C_ADDR (uint32_t) 0xDE // RTC MCP79410
+//#define RTC_I2C_REG (uint32_t) 0x00 // RTC MCP79410
+
+#define EEPROM_I2C_ADDR (uint32_t) 0xA0 // EEPROM 24LC64
+
+
 //#define RTC_I2C_ADDR (uint32_t)0xD0 // RTC DS3231
 
 #define BCD_DIGIT0(x) (x & (uint32_t)0x000F)
@@ -59,7 +67,7 @@ void putchar(char c)
 {
 	if (c == '\n')
 		putchar('\r');
-	reg_uart_data = c;
+	reg_uart_data = c & 0xff;
 }
 
 void print(const char *p)
@@ -230,43 +238,48 @@ void cmd_read_flash_regs()
     cmd_read_flash_regs_print(0x800004, "CR3V");
 }
 
-void rtc_run()
-{
-    write_i2c_slave(RTC_I2C_ADDR, 0x00, 0x00);
-}
-
-void rtc_stop()
-{
-    write_i2c_slave(RTC_I2C_ADDR, 0x00, 0x10);
-}
+//void rtc_run()
+//{
+//    write_i2c_slave(RTC_I2C_ADDR, 0x00, 0x00);
+//}
+//
+//void rtc_stop()
+//{
+//    write_i2c_slave(RTC_I2C_ADDR, 0x00, 0x10);
+//}
 
 void read_rtc()
 {
     uint32_t data[2];
+    unsigned char d;
 
 //    rtc_stop();
 
 //    data = read_i2c_slave_byte(RTC_I2C_ADDR, 0x00); // RTC DS3231
 
-    read_i2c_slave_bytes(RTC_I2C_ADDR, 0x02, data, 3); // RTC PCF8563
+    d = read_i2c_slave_byte(RTC_I2C_ADDR, RTC_I2C_REG);
 
-    data[0] &= (uint32_t) 0x007F;
-    data[1] &= (uint32_t) 0x007F;
-    data[2] &= (uint32_t) 0x003F;
+//    read_i2c_slave_bytes(RTC_I2C_ADDR, RTC_I2C_REG, data, 3);
+
+//    data[0] &= (uint32_t) 0x007F;
+//    data[1] &= (uint32_t) 0x007F;
+//    data[2] &= (uint32_t) 0x003F;
 
 //    clear();
-    print("\r");
-    print("Time = ");
-    print_digit(BCD_DIGIT1(data[2]));
-    print_digit(BCD_DIGIT0(data[2]));
-    print(":");
-    print_digit(BCD_DIGIT1(data[1]));
-    print_digit(BCD_DIGIT0(data[1]));
-    print(":");
-    print_digit(BCD_DIGIT1(data[0]));
-    print_digit(BCD_DIGIT0(data[0]));
-    print("     ");
+//    print("\r");
+//    print_hex(d,2);
+//    print("Time = ");
+//    print_digit(BCD_DIGIT1(data[2]));
+//    print_digit(BCD_DIGIT0(data[2]));
+//    print(":");
+//    print_digit(BCD_DIGIT1(data[1]));
+//    print_digit(BCD_DIGIT0(data[1]));
+//    print(":");
+//    print_digit(BCD_DIGIT1(data[0]));
+//    print_digit(BCD_DIGIT0(data[0]));
+//    print("     ");
 
+//    putchar('A');
 //    rtc_run();
 }
 
@@ -290,7 +303,7 @@ void read_rtc()
 void main()
 {
 	uint32_t i, j;
-	uint32_t data;
+	uint8_t data[3];
 
 	int r;
 
@@ -304,7 +317,7 @@ void main()
 	// So at this crystal rate, use clkdiv = 10417 for 9600 baud.
 
     // Set UART clock to 9600 baud
-	reg_uart_clkdiv = 6667;   // for 8MHz osc
+//	reg_uart_clkdiv = 6667;   // for 8MHz osc
 //	reg_uart_clkdiv = 5000;   // for 6MHz osc
 
 //	rtc_run();
@@ -312,18 +325,22 @@ void main()
 	reg_gpio_enb = 0x0000;
 	reg_gpio_data = 0x0001;
 
-    for (j = 0; j < 70000; j++);
+//    for (j = 0; j < 70000; j++);
+    for (j = 0; j < 1000; j++);
 
     reg_gpio_data = 0x0008;
 
 	// This should appear on the LCD display 4x20 characters.
 //    print("Starting...\n");
 
-    reg_i2c_config = 0;
-    reg_i2c_data = 0;
+//    reg_i2c_config = 0;
+//    reg_i2c_data = 0;
 
-    // Enable I2C with prescaler set for 100Mb/s (standard mode)
-    i2c_init(127);
+    // Enable I2C with prescaler set for 100kb/s (standard mode)
+    // core clk / (i2c clk * 5)
+    i2c_init(128);
+    reg_gpio_data = 0x000b;
+
 
 //
 //    reg_gpio_data = 0x0005;
@@ -340,54 +357,76 @@ void main()
 	while (1) {
 
         // read and display real-time clock
-        // read_rtc();
+//        read_rtc();
+        *(data) = (uint32_t) 0x00;
 
-        reg_gpio_data = 0x0001;
+        write_i2c_slave_byte_eeprom(EEPROM_I2C_ADDR, 0x0150, 0x77);
+
+        reg_gpio_data = 0x0003;
+
+        read_i2c_slave_byte_eeprom(EEPROM_I2C_ADDR, 0x0150, data);
+
+        reg_gpio_data = 0x0f;
+
+//        for (j = 0; j < 100; j++);
+//        reg_gpio_data = data[0];
+//        for (j = 0; j < 100; j++);
+//        reg_gpio_data = data[1];
+//        for (j = 0; j < 100; j++);
+//        reg_gpio_data = data[2];
+//        for (j = 0; j < 100; j++);
+//        reg_gpio_data = data[3];
+//
+//        if ((data[0] == 0x77) || (data[1] == 0x77) || (data[2] == 0x77) || (data[3] == 0x77))
+//            reg_gpio_data = 0x0005;
+//        else
+//            reg_gpio_data = 0x000c;
 
         // Send command 6, data byte 0xfa
 //        r = i2c_send(RTC_I2C_ADDR, 0xfa);
-        data = read_i2c_slave_byte(RTC_I2C_ADDR, 0x02);
+//        data = read_i2c_slave_byte(RTC_I2C_ADDR, 0x02);
 
 //        if (r != 0)
 //            reg_gpio_data |= 0x0002;
 
-        if ((reg_i2c_status & I2C_STAT_AL)  == 1)
-            reg_gpio_data |= 0x0004;
+//        if ((reg_i2c_status & I2C_STAT_AL)  == 1)
+//            reg_gpio_data |= 0x0004;
+//
+//        if ((reg_i2c_status & I2C_STAT_IF)  == 1)
+//        {
+//            reg_gpio_data |= 0x0008;
+//            reg_i2c_command = 0x0001;
+//        }
 
-        if ((reg_i2c_status & I2C_STAT_IF)  == 1)
-        {
-            reg_gpio_data |= 0x0008;
-            reg_i2c_command = 0x0001;
-        }
+//        print("data = ");
+//        print_hex(data, 2);
+//        print("  0x");
+//        print_hex(reg_i2c_status, 2);
+//        print("\n");
 
-        print("data = ");
-        print_hex(data, 2);
-        print("  0x");
-        print_hex(reg_i2c_status, 2);
-        print("\n");
+//        for (j = 0; j < 70000; j++);
 
-        for (j = 0; j < 70000; j++);
-
-        reg_gpio_data = 0x0000;
+//        reg_gpio_data = 0x0000;
 
         // Send command 6, data byte 0xfa
 //        r = i2c_send(RTC_I2C_ADDR, 0xfa);
-        data = read_i2c_slave_byte(RTC_I2C_ADDR, 0x02);
-
+//        data = read_i2c_slave_byte(RTC_I2C_ADDR, 0x02);
+//        i2c_send( RTC_I2C_ADDR, 0x02 );
 
 //        if (r != 0)
 //            reg_gpio_data |= 0x0002;
+//
+//        if ((reg_i2c_status & I2C_STAT_AL)  == 1)
+//            reg_gpio_data |= 0x0004;
+//
+//        if ((reg_i2c_status & I2C_STAT_IF)  == 1)
+//        {
+//            reg_gpio_data |= 0x0008;
+//            reg_i2c_command = 0x0001;
+//        }
 
-        if ((reg_i2c_status & I2C_STAT_AL)  == 1)
-            reg_gpio_data |= 0x0004;
-
-        if ((reg_i2c_status & I2C_STAT_IF)  == 1)
-        {
-            reg_gpio_data |= 0x0008;
-            reg_i2c_command = 0x0001;
-        }
-
-        for (j = 0; j < 70000; j++); // 2 sec
+//        for (j = 0; j < 70000; j++); // 2 sec
+        while (1);
 
 	}
 }

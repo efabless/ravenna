@@ -1,4 +1,5 @@
 TOOLCHAIN_PATH = /opt/riscv32imc/bin/
+# TOOLCHAIN_PATH = /usr/local/opt/riscv32imc/bin/
 # TOOLCHAIN_PATH = /ef/apps/bin/
 
 # ---- Test patterns for project raven ----
@@ -7,18 +8,29 @@ TOOLCHAIN_PATH = /opt/riscv32imc/bin/
 
 PATTERN = rtc
 
-all: hex client
+all: hex lst client
 
 hex:  ${PATTERN:=.hex}
+lst:  ${PATTERN:=.lst}
+sim:  ${PATTERN:=.vcd}
 
-%.elf: %.c ../sections.lds ../start.s i2c_io.c i2c_io.h
-	$(TOOLCHAIN_PATH)riscv32-unknown-elf-gcc -march=rv32imc -Wl,-Bstatic,-T,../sections.lds,--strip-debug -ffreestanding -nostdlib -o $@ ../start.s i2c_io.c $<
+%.vvp: rtc_tb.v %.hex
+	iverilog -I .. -I ../../../ravenna_ip/source -I ../../../ravenna_ip -o ./rtc.vvp $<
+
+%.vcd: rtc.vvp
+	vvp $<
+
+%.elf: %.c ../sections.lds ../start.s i2c_read.s i2c_io.c i2c_io.h
+	$(TOOLCHAIN_PATH)riscv32-unknown-elf-gcc -falign-functions=4 -march=rv32im -Wl,-Bstatic,-T,../sections.lds,--strip-debug -ffreestanding -nostdlib -o $@ ../start.s i2c_read.s i2c_io.c $<
 
 %.hex: %.elf
 	$(TOOLCHAIN_PATH)riscv32-unknown-elf-objcopy -O verilog $< $@
 
 %.bin: %.elf
 	$(TOOLCHAIN_PATH)riscv32-unknown-elf-objcopy -O binary $< $@
+
+%.lst: %.elf
+	$(TOOLCHAIN_PATH)riscv32-unknown-elf-objdump -d -s $< > $@
 
 client: client.c
 	gcc client.c -o client
@@ -29,7 +41,7 @@ flash: rtc.hex
 # ---- Clean ----
 
 clean:
-	rm -f *.elf *.hex *.bin *.vvp *.vcd
+	rm -f *.elf *.hex *.bin *.vvp *.vcd *.lst
 
 .PHONY: clean hex all flash
 
