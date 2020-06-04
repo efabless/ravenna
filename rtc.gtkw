@@ -1,0 +1,52 @@
+[*]
+[*] GTKWave Analyzer v3.3.103 (w)1999-2019 BSI
+[*] Tue Jun  2 17:20:20 2020
+[*]
+[dumpfile] "/Users/jeffdi/Projects/ravenna/firmware/rtc/rtc.vcd"
+[dumpfile_mtime] "Tue Jun  2 17:20:20 2020"
+[dumpfile_size] 80060416
+[savefile] "/Users/jeffdi/Projects/ravenna/firmware/rtc/rtc.gtkw"
+[timestart] 16279300000
+[size] 1357 815
+[pos] -1 -1
+*-25.810562 16419018120 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+[treeopen] rtc_tb.
+[treeopen] rtc_tb.uut.
+[treeopen] rtc_tb.uut.soc.
+[sst_width] 193
+[signals_width] 167
+[sst_expanded] 1
+[sst_vpaned_height] 243
+@22
+rtc_tb.uut.gpio[15:0]
+@200
+-slave
+@28
+rtc_tb.tbi2c.SDA
+rtc_tb.tbi2c.SCL
+rtc_tb.tbi2c.STOP_Rcvd
+@22
+rtc_tb.tbi2c.RdDataByte[7:0]
+@200
+-
+@22
+rtc_tb.uut.soc.simplei2c.reg_dat_do[31:0]
+rtc_tb.uut.soc.simplei2c.reg_dat_di[31:0]
+@28
+rtc_tb.uut.soc.simplei2c.reg_dat_re
+rtc_tb.uut.soc.simplei2c.reg_dat_we
+rtc_tb.uut.soc.simplei2c.tip
+rtc_tb.uut.soc.simplei2c.done
+@29
+rtc_tb.uut.soc.simplei2c.clk
+@28
+rtc_tb.uut.soc.simplei2c.i2c_busy
+rtc_tb.uut.soc.simplei2c.scl_pad_i
+rtc_tb.uut.soc.simplei2c.sda_pad_i
+@22
+rtc_tb.uut.soc.simplei2c.txr[7:0]
+rtc_tb.uut.soc.simplei2c.rxr[7:0]
+rtc_tb.uut.soc.simplei2c.cr[7:0]
+rtc_tb.uut.soc.simplei2c.sr[7:0]
+[pattern_trace] 1
+[pattern_trace] 0
