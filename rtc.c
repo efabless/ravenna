@@ -1,67 +1,57 @@
 #include "../ravenna_defs.h"
-#include "i2c_io.h"
 
-//extern void write_i2c_slave(uint32_t slave_addr, uint32_t word_addr, uint32_t data);
-//extern uint32_t read_i2c_slave_byte(uint32_t slave_addr, uint32_t word_addr);
-//extern void read_i2c_slave_bytes(uint32_t slave_addr, uint32_t word_addr, uint32_t *data, int len);
-//extern void i2c_init();
-//extern void i2c_start();
-//extern void i2c_stop();
-//extern uint32_t i2c_write(volatile uint32_t data);
-//extern uint32_t i2c_read(bool ack);
+/* ravenna_i2c.c:  Implements in-memory read to work around the	*/
+/* i2c module bug.  Allows multiple byte reads.  In-memory	*/
+/* function is read from program memory at the top of main()	*/	
+/* and not again.  This is the "uglier" version because the	*/
+/* memory for func() is allocated in the main routine and	*/
+/* passed to the i2c_receive() subroutine, but it is the most	*/
+/* efficient version.						*/
 
+// command register bits
+// bit 7 = start
+// bit 6 = stop
+// bit 5 = read
+// bit 4 = write
+
+// control register bits
+// bit 27 = acknowledge
+// bit 24 = interrupt acknowledge
+// bit 23 = enable
+// bit 22 = interrupt enable
+
+// bits 15-0:  clock prescaler
 #define RTC_I2C_ADDR (uint32_t) 0xA2 // RTC PCF8563
 #define RTC_I2C_REG (uint32_t) 0x02 // RTC PCF8563
-
-//#define RTC_I2C_ADDR (uint32_t) 0xDE // RTC MCP79410
-//#define RTC_I2C_REG (uint32_t) 0x00 // RTC MCP79410
-
-#define EEPROM_I2C_ADDR (uint32_t) 0xA0 // EEPROM 24LC64
-
-
-//#define RTC_I2C_ADDR (uint32_t)0xD0 // RTC DS3231
 
 #define BCD_DIGIT0(x) (x & (uint32_t)0x000F)
 #define BCD_DIGIT1(x) ((x >> 4) & (uint32_t)0x000F)
 
-// --------------------------------------------------------
-// Firmware routines
-// --------------------------------------------------------
+#define     I2C_CMD_STA         0x80
+#define     I2C_CMD_STO         0x40
+#define     I2C_CMD_RD          0x20
+#define     I2C_CMD_WR          0x10
+#define     I2C_CMD_ACK         0x08
+#define     I2C_CMD_IACK        0x01
 
-// Copy the flash worker function to SRAM so that the SPI can be
-// managed without having to read program instructions from it.
+#define     I2C_CTRL_EN         0x80
+#define     I2C_CTRL_IEN        0x40
 
-void flashio(uint32_t *data, int len, uint8_t wrencmd)
-{
-	uint32_t func[&flashio_worker_end - &flashio_worker_begin];
+// status regiter bits:
+// bit 7 = receive acknowledge
+// bit 6 = busy (start signal detected)
+// bit 5 = arbitration lost
+// bit 1 = transfer in progress
+// bit 0 = interrupt flag
 
-	uint32_t *src_ptr = &flashio_worker_begin;
-	uint32_t *dst_ptr = func;
+#define     I2C_STAT_RXACK      0x80
+#define     I2C_STAT_BUSY       0x40
+#define     I2C_STAT_AL         0x20
+#define     I2C_STAT_TIP        0x02
+#define     I2C_STAT_IF         0x01
 
-	while (src_ptr != &flashio_worker_end)
-		*(dst_ptr++) = *(src_ptr++);
-
-	((void(*)(uint32_t*, uint32_t, uint32_t))func)(data, len, wrencmd);
-}
-
-//--------------------------------------------------------------
-// NOTE: Volatile write *only* works with command 01, making the
-// above routing non-functional.  Must write all four registers
-// status, config1, config2, and config3 at once.
-//--------------------------------------------------------------
-// (NOTE: Forces quad/ddr modes off, since function runs in single data pin mode)
-// (NOTE: Also sets quad mode flag, so run this before entering quad mode)
-//--------------------------------------------------------------
-
-void set_flash_latency(uint8_t value)
-{
-	reg_spictrl = (reg_spictrl & ~0x007f0000) | ((value & 15) << 16);
-
-	uint32_t buffer_wr[2] = {0x01000260, ((0x70 | value) << 24)};
-	flashio(buffer_wr, 5, 0x50);
-}
-
-//--------------------------------------------------------------
+extern uint32_t i2c_inmem_read_begin;
+extern uint32_t i2c_inmem_read_end;
 
 void putchar(char c)
 {
@@ -76,28 +66,12 @@ void print(const char *p)
 		putchar(*(p++));
 }
 
-void print_ln(const char *p)
-{
-	for (int i=0; i<20; i++)
-	{
-	    if (*p)
-		    putchar(*(p++));
-        else
-		    putchar(' ');
-    }
-}
-
 void clear()
 {
-    reg_uart_data = 0x7c;
-    reg_uart_data = 0x2d;
+	reg_uart_data = 0x7c;
+	reg_uart_data = 0x2d;
 }
 
-void home()
-{
-    reg_uart_data = 254;
-    reg_uart_data = 0x02;
-}
 
 void print_hex(uint32_t v, int digits)
 {
@@ -107,327 +81,251 @@ void print_hex(uint32_t v, int digits)
 	}
 }
 
-void print_dec(uint32_t v)
-{
-	if (v >= 2000) {
-		print("OVER");
-		return;
-	}
-	else if (v >= 1000) { putchar('1'); v -= 1000; }
-	else putchar(' ');
-
-	if 	(v >= 900) { putchar('9'); v -= 900; }
-	else if	(v >= 800) { putchar('8'); v -= 800; }
-	else if	(v >= 700) { putchar('7'); v -= 700; }
-	else if	(v >= 600) { putchar('6'); v -= 600; }
-	else if	(v >= 500) { putchar('5'); v -= 500; }
-	else if	(v >= 400) { putchar('4'); v -= 400; }
-	else if	(v >= 300) { putchar('3'); v -= 300; }
-	else if	(v >= 200) { putchar('2'); v -= 200; }
-	else if	(v >= 100) { putchar('1'); v -= 100; }
-	else putchar('0');
-		
-	if 	(v >= 90) { putchar('9'); v -= 90; }
-	else if	(v >= 80) { putchar('8'); v -= 80; }
-	else if	(v >= 70) { putchar('7'); v -= 70; }
-	else if	(v >= 60) { putchar('6'); v -= 60; }
-	else if	(v >= 50) { putchar('5'); v -= 50; }
-	else if	(v >= 40) { putchar('4'); v -= 40; }
-	else if	(v >= 30) { putchar('3'); v -= 30; }
-	else if	(v >= 20) { putchar('2'); v -= 20; }
-	else if	(v >= 10) { putchar('1'); v -= 10; }
-	else putchar('0');
-
-	if 	(v >= 9) { putchar('9'); v -= 9; }
-	else if	(v >= 8) { putchar('8'); v -= 8; }
-	else if	(v >= 7) { putchar('7'); v -= 7; }
-	else if	(v >= 6) { putchar('6'); v -= 6; }
-	else if	(v >= 5) { putchar('5'); v -= 5; }
-	else if	(v >= 4) { putchar('4'); v -= 4; }
-	else if	(v >= 3) { putchar('3'); v -= 3; }
-	else if	(v >= 2) { putchar('2'); v -= 2; }
-	else if	(v >= 1) { putchar('1'); v -= 1; }
-	else putchar('0');
-}
 
 void print_digit(uint32_t v)
 {
-    v &= (uint32_t)0x000F;
+	v &= (uint32_t)0x000F;
 
-    if (v == 9) { putchar('9'); }
-    else if (v == 8) { putchar('8'); }
-    else if (v == 7) { putchar('7'); }
-    else if (v == 6) { putchar('6'); }
-    else if (v == 5) { putchar('5'); }
-    else if (v == 4) { putchar('4'); }
-    else if (v == 3) { putchar('3'); }
-    else if (v == 2) { putchar('2'); }
-    else if (v == 1) { putchar('1'); }
-    else if (v == 0) { putchar('0'); }
-    else putchar('*');
+	if (v == 9) { putchar('9'); }
+	else if (v == 8) { putchar('8'); }
+	else if (v == 7) { putchar('7'); }
+	else if (v == 6) { putchar('6'); }
+	else if (v == 5) { putchar('5'); }
+	else if (v == 4) { putchar('4'); }
+	else if (v == 3) { putchar('3'); }
+	else if (v == 2) { putchar('2'); }
+	else if (v == 1) { putchar('1'); }
+	else if (v == 0) { putchar('0'); }
+	else putchar('*');
 }
 
-char getchar_prompt(char *prompt)
-{
-	int32_t c = -1;
+// --------------------------------------------------------
 
-	uint32_t cycles_begin, cycles_now, cycles;
-	__asm__ volatile ("rdcycle %0" : "=r"(cycles_begin));
+void i2c_init(unsigned int pre) {
 
-//	reg_leds = ~0;
-
-	if (prompt)
-		print(prompt);
-
-	while (c == -1) {
-		__asm__ volatile ("rdcycle %0" : "=r"(cycles_now));
-		cycles = cycles_now - cycles_begin;
-		if (cycles > 12000000) {
-			if (prompt)
-				print(prompt);
-			cycles_begin = cycles_now;
-//			reg_leds = ~reg_leds;
-		}
-		c = reg_uart_data;
-	}
-
-//	reg_leds = 0;
-	return c;
+    reg_i2c_control = (uint16_t)(I2C_CTRL_EN | I2C_CTRL_IEN);
+    reg_i2c_prescale = (uint16_t)pre;
 }
 
-char getchar()
-{
-	return getchar_prompt(0);
-}
+// --------------------------------------------------------
+// Send one or more bytes over i2c
+// --------------------------------------------------------
 
-// ----------------------------------------------------------------------
+int i2c_send(unsigned char saddr, unsigned char waddr, unsigned char *sdata, int len) {
+    int i;
 
-void cmd_read_flash_regs_print(uint32_t addr, const char *name)
-{
-    uint32_t buffer[2] = {0x65000000 | addr, 0x0}; //
-    flashio(buffer, 6, 0);
+    reg_i2c_data = saddr;
+    reg_i2c_command = I2C_CMD_STA | I2C_CMD_WR;
 
-    print("0x");
-    print_hex(addr, 6);
-    print(" ");
-    print(name);
-    print(" 0x");
-    print_hex(buffer[1], 2);
-    print("  ");
-}
+    while ((reg_i2c_status & I2C_STAT_TIP) != 0);
 
-void cmd_echo()
-{
-	print("Return to menu by sending '!'\n\n");
-	char c;
-	while ((c = getchar()) != '!') {
-		if (c == '\r')
-		    putchar('\n');
-        else
-		    putchar(c);
+    if ((reg_i2c_status & I2C_STAT_RXACK)  == 1) {
+        reg_i2c_command = I2C_CMD_STO;
+        return 0;
     }
+    reg_i2c_data = waddr;
+    reg_i2c_command = I2C_CMD_WR;
+
+    while (reg_i2c_status & I2C_STAT_TIP);
+
+    for (i = 0; i < len; i++)
+    {
+    	reg_i2c_data = *(sdata + i);
+    	reg_i2c_command = I2C_CMD_WR;
+
+    	while (reg_i2c_status & I2C_STAT_TIP);
+    }
+    reg_i2c_command = I2C_CMD_STO;
+
+    if ((reg_i2c_status & I2C_STAT_RXACK) == 1)
+        return 0;
+    else
+        return 1;
 }
 
-// ----------------------------------------------------------------------
+// --------------------------------------------------------
 
-void cmd_read_flash_regs()
+void i2c_inmem_load(uint32_t *func)
 {
-    cmd_read_flash_regs_print(0x800000, "SR1V");
-    cmd_read_flash_regs_print(0x800002, "CR1V");
-    cmd_read_flash_regs_print(0x800003, "CR2V");
-    cmd_read_flash_regs_print(0x800004, "CR3V");
+    uint32_t *src_ptr = &i2c_inmem_read_begin;
+    uint32_t *dst_ptr = func;
+
+    while (src_ptr != &i2c_inmem_read_end)
+        *(dst_ptr++) = *(src_ptr++);
 }
 
-//void rtc_run()
-//{
-//    write_i2c_slave(RTC_I2C_ADDR, 0x00, 0x00);
-//}
-//
-//void rtc_stop()
-//{
-//    write_i2c_slave(RTC_I2C_ADDR, 0x00, 0x10);
-//}
+// --------------------------------------------------------
+// Read performed in SRAM for speed, so that the read can
+// be aligned with the short "done" pulse.  (1) Copy the
+// routine from flash memory to SRAM, (2) launch the read
+// from SRAM.
+// --------------------------------------------------------
 
-void read_rtc()
+uint32_t i2c_inmem_read(uint32_t flags, uint32_t adjust, uint32_t *func)
 {
-    uint32_t data[2];
-    unsigned char d;
+    return ((uint32_t(*)(uint32_t, uint32_t))func)(flags, adjust);
+}
+
+// --------------------------------------------------------
+// Receive one or more bytes over i2c
+// --------------------------------------------------------
+
+int i2c_receive(unsigned char saddr, unsigned char waddr,
+	unsigned char *sdata, int len, uint32_t *func) {
+    int i;
+    uint32_t rbyte;
+
+    reg_i2c_data = saddr;
+    reg_i2c_command = I2C_CMD_STA | I2C_CMD_WR;
+
+    while ((reg_i2c_status & I2C_STAT_TIP) != 0);
+
+    if ((reg_i2c_status & I2C_STAT_RXACK)  == 1) {
+        reg_i2c_command = I2C_CMD_STO;
+        return 0;
+    }
+
+    reg_i2c_data = waddr;
+    reg_i2c_command = I2C_CMD_WR;
+
+    while ((reg_i2c_status & I2C_STAT_TIP) != 0);
+
+    if ((reg_i2c_status & I2C_STAT_RXACK)  == 1) {
+        reg_i2c_command = I2C_CMD_STO;
+        return 0;
+    }
+
+    // Restart and send slave address + read bit
+
+    reg_i2c_data = saddr | 0x0001;
+    reg_i2c_command = I2C_CMD_STA | I2C_CMD_WR;
+
+    while (reg_i2c_status & I2C_STAT_TIP);
+
+    if ((reg_i2c_status & I2C_STAT_RXACK) == 1)
+    {
+    	reg_i2c_command = I2C_CMD_STO;
+        return 0;
+    }
+
+    for (i = 0; i < len; i++) {
+	if (i == len - 1)
+	    rbyte = i2c_inmem_read(I2C_CMD_RD | I2C_CMD_ACK | I2C_CMD_STO, 0x0d, func);
+	else
+	    rbyte = i2c_inmem_read(I2C_CMD_RD, 0x19, func);
+
+        *(sdata + i) = (uint8_t)rbyte & 0xff;
+    }
+    return 1;
+}
+
+// --------------------------------------------------------
+// Read time value from the RTC module starting at
+// register 0x2 (RTC_I2C_REG).
+// --------------------------------------------------------
+
+void read_rtc(uint32_t *func)
+{	
+    uint8_t data[3];
+    uint8_t data_0;
+    uint8_t data_1;
+    uint8_t data_2;
+
+    data[0] = data[1] = data[2] = 0;
+    data_0 = data_1 = data_2 = 0;
 
 //    rtc_stop();
 
-//    data = read_i2c_slave_byte(RTC_I2C_ADDR, 0x00); // RTC DS3231
+//    i2c_receive(RTC_I2C_ADDR, RTC_I2C_REG, data, 3, func);
+    i2c_receive(RTC_I2C_ADDR, RTC_I2C_REG, &data_0, 1, func);
+    i2c_receive(RTC_I2C_ADDR, RTC_I2C_REG+1, &data_1, 1, func);
+    i2c_receive(RTC_I2C_ADDR, RTC_I2C_REG+2, &data_2, 1, func);
 
-    d = read_i2c_slave_byte(RTC_I2C_ADDR, RTC_I2C_REG);
 
-//    read_i2c_slave_bytes(RTC_I2C_ADDR, RTC_I2C_REG, data, 3);
+//    rtc_run();
 
-//    data[0] &= (uint32_t) 0x007F;
-//    data[1] &= (uint32_t) 0x007F;
-//    data[2] &= (uint32_t) 0x003F;
+    data[0] &= (uint8_t) 0x7F;
+    data[1] &= (uint8_t) 0x7F;
+    data[2] &= (uint8_t) 0x3F;
+
+    data_0 &= (uint8_t) 0x7F;
+    data_1 &= (uint8_t) 0x7F;
+    data_2 &= (uint8_t) 0x3F;
+
+    // Print time in HH:MM:SS
 
 //    clear();
-//    print("\r");
-//    print_hex(d,2);
-//    print("Time = ");
+    print("\r");
+    print("Time = ");
 //    print_digit(BCD_DIGIT1(data[2]));
+    print_digit(BCD_DIGIT1(data_2));
 //    print_digit(BCD_DIGIT0(data[2]));
-//    print(":");
+    print_digit(BCD_DIGIT0(data_2));
+//    print_hex(data[2],2);
+//    print_hex(data_2,2);
+    print(":");
 //    print_digit(BCD_DIGIT1(data[1]));
+    print_digit(BCD_DIGIT1(data_1));
 //    print_digit(BCD_DIGIT0(data[1]));
-//    print(":");
+    print_digit(BCD_DIGIT0(data_1));
+//    print_hex(data[1],2);
+//    print_hex(data_1,2);
+    print(":");
 //    print_digit(BCD_DIGIT1(data[0]));
+    print_digit(BCD_DIGIT1(data_0));
 //    print_digit(BCD_DIGIT0(data[0]));
+    print_digit(BCD_DIGIT0(data_0));
 //    print("     ");
 
-//    putchar('A');
-//    rtc_run();
+    // Display seconds value on LEDs
+//    reg_gpio_data = data[0];	// Seconds on LEDs
+    reg_gpio_data = data_0;	// Seconds on LEDs
 }
 
-// ----------------------------------------------------------------------
-// Raven demo:  Demonstrate various capabilities of the Raven testboard.
-//
-// 1. Flash:  Set the flash to various speed modes
-// 2. GPIO:   Drive the LEDs in a loop
-// 3. UART:   Print text to the UART LCD display
-// 4. RC Osc: Enable the 100MHz RC oscillator and output on a GPIO line
-// 5. DAC:    Enable the DAC and ramp
-// 6. ADC:    Enable both ADCs and periodically read and display the DAC
-//	      and bandgap values on the UART display.
-// ----------------------------------------------------------------------
-// NOTE:  There are two versions of this demo.  Demo 1 runs only up to
-//	  2X speed (DSPI + CRM).  The higher speeds cause some timing
-//	  trouble, which may be due to reflections on the board wires
-//	  for IO2 and IO3.  Not sure of the mechanism.  To keep the
-//	  boards running without failure, do not use QSPI modes.
+
+
+void rtc_run()
+{
+	// Clear STOP bit from register 0x0
+	unsigned char send_data = 0x00;
+	i2c_send(RTC_I2C_ADDR, 0x00, &send_data, 1);
+}
+
+
+
+void rtc_stop()
+{
+	// Apply STOP bit to register 0x0
+	unsigned char send_data = 0x10;
+	i2c_send(RTC_I2C_ADDR, 0x00, &send_data, 1);
+}
 
 void main()
 {
-	uint32_t i, j;
-	uint8_t data[3];
+    int j;
 
-	int r;
+    // Used by in-memory read routine
+    uint32_t func[&i2c_inmem_read_end - &i2c_inmem_read_begin];
 
-	set_flash_latency(8);
+    // Use GPIO to signal the state of the system
+    reg_gpio_enb =  0xfff0;
+    reg_gpio_data = 0x0000;	// Checkpoint 0 on LEDs
 
-	// Start in standard (1x speed) mode
+    // Preload the in-memory function
+    i2c_inmem_load(func);
 
-	// NOTE: Crystal on testboard running at 12.5MHz
-	// Internal clock is 8x crystal, or 100MHz
-	// Divided by clkdiv is 9.6 kHz
-	// So at this crystal rate, use clkdiv = 10417 for 9600 baud.
-
-    // Set UART clock to 9600 baud
-//	reg_uart_clkdiv = 6667;   // for 8MHz osc
-//	reg_uart_clkdiv = 5000;   // for 6MHz osc
-
-//	rtc_run();
-
-	reg_gpio_enb = 0x0000;
-	reg_gpio_data = 0x0001;
-
-//    for (j = 0; j < 70000; j++);
-    for (j = 0; j < 1000; j++);
-
-    reg_gpio_data = 0x0008;
-
-	// This should appear on the LCD display 4x20 characters.
-//    print("Starting...\n");
-
-//    reg_i2c_config = 0;
-//    reg_i2c_data = 0;
-
-    // Enable I2C with prescaler set for 100kb/s (standard mode)
-    // core clk / (i2c clk * 5)
+    // Required I2C for use with the in-memory software fix as written
     i2c_init(128);
-    reg_gpio_data = 0x000b;
 
+    rtc_run();
+    
+    reg_uart_clkdiv = 6667; // 9600 baud at 8 MHz osc
 
-//
-//    reg_gpio_data = 0x0005;
-//
-//    print("Press ENTER to continue..\n");
-//    while (getchar() != '\r') {}
-//
-////    cmd_echo();
-//
-//    print("\n\n");
-//
-//    reg_gpio_data = 0x000f;
+    // Testbench to be completed:  Set up configuration
+    // then read and write a few bytes to confirm signalling.
 
-	while (1) {
-
-        // read and display real-time clock
-//        read_rtc();
-        *(data) = (uint32_t) 0x00;
-
-        write_i2c_slave_byte_eeprom(EEPROM_I2C_ADDR, 0x0150, 0x77);
-
-        reg_gpio_data = 0x0003;
-
-        read_i2c_slave_byte_eeprom(EEPROM_I2C_ADDR, 0x0150, data);
-
-        reg_gpio_data = 0x0f;
-
-//        for (j = 0; j < 100; j++);
-//        reg_gpio_data = data[0];
-//        for (j = 0; j < 100; j++);
-//        reg_gpio_data = data[1];
-//        for (j = 0; j < 100; j++);
-//        reg_gpio_data = data[2];
-//        for (j = 0; j < 100; j++);
-//        reg_gpio_data = data[3];
-//
-//        if ((data[0] == 0x77) || (data[1] == 0x77) || (data[2] == 0x77) || (data[3] == 0x77))
-//            reg_gpio_data = 0x0005;
-//        else
-//            reg_gpio_data = 0x000c;
-
-        // Send command 6, data byte 0xfa
-//        r = i2c_send(RTC_I2C_ADDR, 0xfa);
-//        data = read_i2c_slave_byte(RTC_I2C_ADDR, 0x02);
-
-//        if (r != 0)
-//            reg_gpio_data |= 0x0002;
-
-//        if ((reg_i2c_status & I2C_STAT_AL)  == 1)
-//            reg_gpio_data |= 0x0004;
-//
-//        if ((reg_i2c_status & I2C_STAT_IF)  == 1)
-//        {
-//            reg_gpio_data |= 0x0008;
-//            reg_i2c_command = 0x0001;
-//        }
-
-//        print("data = ");
-//        print_hex(data, 2);
-//        print("  0x");
-//        print_hex(reg_i2c_status, 2);
-//        print("\n");
-
-//        for (j = 0; j < 70000; j++);
-
-//        reg_gpio_data = 0x0000;
-
-        // Send command 6, data byte 0xfa
-//        r = i2c_send(RTC_I2C_ADDR, 0xfa);
-//        data = read_i2c_slave_byte(RTC_I2C_ADDR, 0x02);
-//        i2c_send( RTC_I2C_ADDR, 0x02 );
-
-//        if (r != 0)
-//            reg_gpio_data |= 0x0002;
-//
-//        if ((reg_i2c_status & I2C_STAT_AL)  == 1)
-//            reg_gpio_data |= 0x0004;
-//
-//        if ((reg_i2c_status & I2C_STAT_IF)  == 1)
-//        {
-//            reg_gpio_data |= 0x0008;
-//            reg_i2c_command = 0x0001;
-//        }
-
-//        for (j = 0; j < 70000; j++); // 2 sec
-        while (1);
-
-	}
+    while (1) {
+        read_rtc(func);
+	for (j = 0; j < 70000; j++); // 2 sec
+    }	
 }
-
