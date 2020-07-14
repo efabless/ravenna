@@ -20,8 +20,8 @@ sim:  ${PATTERN:=.vcd}
 %.vcd: rtc.vvp
 	vvp $<
 
-%.elf: %.c ../sections.lds ../start.s i2c_read.s i2c_io.c i2c_io.h
-	$(TOOLCHAIN_PATH)riscv32-unknown-elf-gcc -falign-functions=4 -march=rv32im -Wl,-Bstatic,-T,../sections.lds,--strip-debug -ffreestanding -nostdlib -o $@ ../start.s i2c_read.s i2c_io.c $<
+%.elf: %.c ../sections.lds ../start.s ../i2c_read.s
+	$(TOOLCHAIN_PATH)riscv32-unknown-elf-gcc -falign-functions=4 -march=rv32imc -Wl,-Bstatic,-T,../sections.lds,--strip-debug -ffreestanding -nostdlib -o $@ ../start.s ../i2c_read.s $<
 
 %.hex: %.elf
 	$(TOOLCHAIN_PATH)riscv32-unknown-elf-objcopy -O verilog $< $@
@@ -37,6 +37,7 @@ client: client.c
 
 flash: rtc.hex
 	python3 ../../test/ravenna_hkspi.py rtc.hex
+# 	python3 ../../test/ravenna_flash.py rtc.hex
 
 # ---- Clean ----
 
