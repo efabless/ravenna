@@ -22,11 +22,9 @@
 
 `include "../../ravenna_ip/ravenna.v"
 `include "../../ravenna_ip/spiflash.v"
-`include "../../ravenna_ip/i2c_slave.v"
-`include "../../ravenna_ip/MCP79410.v"
-`include "../../ravenna_ip/24LC64.v"
+`include "../../ravenna_ip/tbuart.v"
 
-module rtc_tb;
+module ravenna_spi_tb;
 	reg XCLK;
 	reg real VDD3V3;
 
@@ -70,14 +68,14 @@ module rtc_tb;
 	end
 
 	initial begin
-		$dumpfile("rtc.vcd");
-		$dumpvars(0, rtc_tb);
+		$dumpfile("ravenna_spi.vcd");
+		$dumpvars(0, ravenna_spi_tb);
 
-		$display("Wait for it. . . ");
-		repeat (2) begin
-			repeat (50000) @(posedge XCLK);
-			// Diagnostic. . . interrupts output pattern.
-			// $display("+1000 cycles");
+		$display("No output, check signals with gtkwave.");
+		repeat (3) begin
+			repeat (1000) @(posedge XCLK);
+			// Diagnostic
+			$display("+1000 cycles");
 		end
 		$finish;
 	end
@@ -93,7 +91,6 @@ module rtc_tb;
 
 	reg SDI, CSB, SCK;
 	wire SDO;
-	wire SCL, SDA;
 
 	initial begin
 		CSB <= 1'b1;
@@ -121,12 +118,12 @@ module rtc_tb;
 		.SCK	  (SCK),
 		.ser_rx	  (1'b0	    ),
 		.ser_tx	  (tbuart_rx),
-                .i2c_sda  (SDA      ),
-                .i2c_scl  (SCL      ),
-                .spi_sdi  (1'b0     ),
-                .spi_csb  (         ),
-                .spi_sck  (         ),
-                .spi_sdo  (         ),
+                .i2c_sda  (         ),
+                .i2c_scl  (         ),
+                .spi_sdi  (spi_sdi  ),
+                .spi_csb  (spi_csb  ),
+                .spi_sck  (spi_sck  ),
+                .spi_sdo  (spi_sdo  ),
 		.irq	  (1'b0	    ),
 		.gpio     (gpio     ),
 		.flash_csb(flash_csb),
@@ -145,7 +142,8 @@ module rtc_tb;
 	);
 
 	spiflash #(
-		.FILENAME("rtc.hex")
+/*		.FILENAME("ravenna_spi.hex") */
+		.FILENAME("spi.hex")
 	) spiflash (
 		.csb(flash_csb),
 		.clk(flash_clk),
@@ -155,19 +153,16 @@ module rtc_tb;
 		.io3(flash_io3)
 	);
 
-	// Testbench I2C
-
-	M24LC64 tbi2c (
-		.SCL(SCL),
-		.SDA(SDA),
-		.A0(VSS),
-		.A1(VSS),
-		.A2(VSS),
-		.WP(VSS)
+	// Testbench SPI.  Use the QSPI module because it's available.
+	spiflash #(
+		.FILENAME("tbspi.hex")
+ 	) tbspi (
+		.csb(spi_csb),
+		.clk(spi_sck),
+		.io0(spi_sdo),
+		.io1(spi_sdi),
+		.io2(),
+		.io3()
 	);
-
-	// Testbench pullups on SDA, SCL lines
-	pullup p1(SCL);
-	pullup p2(SDA);
 		
 endmodule

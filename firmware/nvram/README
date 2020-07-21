@@ -1,0 +1,3 @@
+This file programs the NVRAM area, then overwrites with
+volatile data, then refreshes from the nonvolatile contents.
+Each time the data are printed.
