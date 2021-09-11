@@ -42,7 +42,7 @@ gperf libtool patchutils bc zlib1g-dev git libexpat1-dev
   To compile and download the firmware example code, first connect Ravenna 
   to your workstation using the USB cable.  No jumper should be installed on the board.
   
-> % cd ~/ravenna/firmware/blink
+> % cd ravenna/firmware/blink
 >
 > % make clean
 >
