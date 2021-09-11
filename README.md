@@ -38,12 +38,14 @@ gperf libtool patchutils bc zlib1g-dev git libexpat1-dev
 >
 > % make $(nproc) build-riscv32imc-tools
 >
-> % cd ~/ raven-picorv32/verilog/raven_rtc
+  
+  To compile and download the firmware example code, first connect Ravenna 
+  to your workstation using the USB cable.  No jumper should be installed on the board.
+  
+> % cd ~/ravenna/firmware/blink
 >
 > % make clean
 >
 > % make hex
 >
-> % sudo tclftdi ../../test/startup_flash.tcl
->
-> \> write_flash ftdi0 raven_rtc.hex
+> % make flash
